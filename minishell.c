@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 02:25:44 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/18 14:10:48 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/18 14:28:14 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_commands	*create_args(void)
 		return (NULL);
 	args[0] = ft_strdup("hello world !");
 	args[1] = NULL;
-	command = ft_new_command(args, 0, 1);
+	command = ft_new_command(args, 0, 1, 0);
 	if (!command)
 		return (NULL);
 	return (command);

@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:31:28 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/18 13:12:30 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/18 14:31:44 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,6 @@
 # include <stdarg.h>
 # include <stdbool.h>
 
-typedef struct s_env_var
-{
-	char				*key;
-	char				*value;
-	struct s_env_var	*next;
-	struct s_env_var	*prev;
-	struct s_env_var	*head;
-	struct s_env_var	*tail;
-}				t_env_var;
-
 typedef struct s_commands
 {
 	char				**command;
@@ -42,7 +32,7 @@ typedef struct s_commands
 }				t_commands ;
 
 //linked list:
-t_commands	*ft_new_command(char **commands, int in, int out);
+t_commands	*ft_new_command(char **commands, int in, int out, int out_type);
 t_commands	*get_last_command(t_commands **head);
 void		ft_add_command(t_commands **head, t_commands *node);
 void		ft_clear_commands(t_commands **head);
