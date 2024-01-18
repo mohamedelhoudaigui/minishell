@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 01:09:21 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/18 14:09:03 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/18 14:35:59 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ int	echo(t_commands *command)
 		close(command->out);
 	}
 	args = command->command;
-	flag = check_flag(args[0]);
-	i = 0;
+	flag = check_flag(args[1]);
+	i = 1;
 	while (check_flag(args[i]) == 1)
 		i++;
 	if (args[i] != NULL)

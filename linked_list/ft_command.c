@@ -6,13 +6,13 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 12:04:23 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/18 14:28:01 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/18 14:42:43 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_commands	*ft_new_command(char **commands, int in, int out, int out_type)
+t_commands	*ft_new_command(char **commands, int in, int out)
 {
 	t_commands	*node;
 
@@ -23,7 +23,6 @@ t_commands	*ft_new_command(char **commands, int in, int out, int out_type)
 	node->in = in;
 	node->out = out;
 	node->next = NULL;
-	node->out_type = out_type;
 	return (node);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 10:26:41 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/17 18:12:12 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/18 16:51:57 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,11 @@
 int	change_old_pwd(t_list **env_var)
 {
 	t_list	*pwd;
-	t_list	*old_pwd;
-	char	*pwd_path;
 
 	pwd = ft_lstfind_str(env_var, "PWD=");
-	old_pwd = ft_lstfind_str(env_var, "OLDPWD=");
-	if (!pwd || !old_pwd)
+	if (!pwd)
 		return (1);
-	pwd_path = ft_strjoin("OLDPWD=", &pwd->content[4]);
-	free(old_pwd->content);
-	old_pwd->content = pwd_path;
+	update_env_var(env_var, "OLDPWD=", &pwd->content[4]);
 	return (0);
 }
 
@@ -40,35 +35,37 @@ int	change_old_pwd(t_list **env_var)
 // 		return (1);
 // }
 
-// int	change_cwd_env(t_list **env_var, char *path)
-// {
-// 	char	*new_path;
+int	change_cwd_env(t_list **env_var, char *path)
+{
+	update_env_var(env_var, "PWD=", path);
+	return (0);
+}
 
-// 	if (ft_strncmp(path, ".", ft_strlen(path)) == 0)
-// 		return (0);
-	
-// 	return (1);
-// }
-
-int	cd(t_list **env_adr, t_list *args)
+int	cd(t_list **env_adr, t_commands *command)
 {
 	char	*path;
 	t_list	*env_var;
-	// char	*r_path;
-
-	if (!args || args->content == NULL)
-		return (1);
+	char	**args;
+	
+	args = command->command;
 	env_var = *env_adr;
-	path = args->content;
+	path = args[1];
 	if (access(path, F_OK) == 0)
 	{
-		if (change_old_pwd(env_adr) == 1)
+		change_old_pwd(env_adr);
+		if (change_cwd_env(&env_var, path) == 1)
 			return (1);
-		// change_cwd_env(&env_var, path);
-		chdir(path);
-		printf("%s\n", path);
-		system("ls");
+		if (chdir(path) == -1)
+		{
+			perror("chdir");
+			return (1);
+		}
 		return (0);
+	}
+	else
+	{
+		perror("access");
+		return (1);
 	}
 	return (0);
 }
