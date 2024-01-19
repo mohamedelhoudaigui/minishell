@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:40:59 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/19 02:36:17 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/19 04:30:58 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,20 +78,44 @@ void	remove_env_var(t_list **head, t_list **node)
 
 	if (!head || *head == NULL || !node)
 		return ;
-	if (ft_lstsize(*head) == 1)
+	if (*node == *head)
 	{
+		if (ft_lstsize(*head) == 1)
+		{
+			*head = (*node)->next;
+			(*node)->next = NULL;
+			ft_lstdelone(*node, free);
+			return ;
+		}
 		ft_lstclear(head, free);
 		*head = NULL;
 		return ;
 	}
-	iter = *head;
 	node_d = *node;
 	next = node_d->next;
-	while (iter->next != node_d)
+	iter = *head;
+	while (iter)
 	{
 		prev = iter;
 		iter = iter->next;
+		if (iter == node_d)
+			break ;
 	}
-	ft_lstdelone(node_d, free);
+	iter->next = NULL;
 	prev->next = next;
+	ft_lstdelone(*node, free);
+}
+
+void	add_env_var(t_list **env_var, char *var_value)
+{
+	char	*var;
+	t_list	*node;
+
+	var = ft_strdup(var_value);
+	if (!var)
+		return ;
+	node = ft_lstnew(var);
+	if (!node)
+		return ;
+	ft_lstadd_back(env_var, node);
 }

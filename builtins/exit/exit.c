@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 18:51:41 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/19 01:30:11 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/19 03:33:23 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void    exit_b(t_commands *command, t_list **env_var, t_commands **args)
     unsigned long long  status;
 
     redirect_out(command->out);
+    redirect_in(command->in);
     status = ft_atoul(command->command[1]);
     if (status > 9223372036854775807)
         status = 255;

@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 01:09:21 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/19 01:31:42 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/19 03:33:05 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int	echo(t_commands *command)
 	char	**args;
 
 	redirect_out(command->out);
+	redirect_in(command->in);
 	args = command->command;
 	flag = check_flag(args[1]);
 	i = 1;
