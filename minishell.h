@@ -6,12 +6,12 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:31:28 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/18 16:37:34 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/19 02:34:17 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTINS_H
-# define BUILTINS_H
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
 # include "./libft/libft.h"
 # include <unistd.h>
@@ -23,6 +23,12 @@
 # include <stdarg.h>
 # include <stdbool.h>
 
+typedef struct s_garbg
+{
+    void            *ptr;
+    struct s_garbg    *next;
+}    t_garbg;
+
 typedef struct s_commands
 {
 	char				**command;
@@ -30,6 +36,14 @@ typedef struct s_commands
 	int					out;
 	struct s_commands	*next;
 }				t_commands ;
+
+//redirect :
+void	redirect_out(int out);
+void	redirect_in(int in);
+
+//garbage : 
+void    clear_garbage(t_garbg *head);
+void    *garbage(int size, int len, int status);
 
 //linked list:
 t_commands	*ft_new_command(char **commands, int in, int out);
@@ -41,17 +55,29 @@ void		ft_clear_commands(t_commands **head);
 t_list	*get_env_var(char **env);
 void	update_env_var(t_list **head, char *env_var_name ,char *arg);
 void	create_env_var(t_list **head, char *env_var_name, char *arg);
-
+void	remove_env_var(t_list **head, t_list **node);
 
 // echo :
 int		echo(t_commands *command);
-int		check_flag(char *flag);
+bool		check_flag(char *flag);
 void	call_expander(char *str);
 
 // pwd :
-int	pwd(void);
+int	pwd(t_commands *args);
 
 //cd :
-int	cd(t_list **env_adr, t_commands *args);
+int		cd(t_list **env_adr, t_commands *args);
+int		change_cwd_env(t_list **env_var, char *path);
+char	*change_to_var(t_list **env_adr, char *var_name);
+int		change_old_pwd(t_list **env_var);
+
+//exit :
+void    exit_b(t_commands *command, t_list **env_var, t_commands **args);
+
+//env :
+int	env_b(t_list *env_var, t_commands *args);
+
+//unset :
+int	unset(t_list **env_vars, t_commands *args);
 
 #endif

@@ -1,28 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_atoul.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/17 10:53:18 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/19 01:31:01 by mel-houd         ###   ########.fr       */
+/*   Created: 2024/01/18 22:42:17 by mel-houd          #+#    #+#             */
+/*   Updated: 2024/01/18 22:43:30 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "libft.h"
 
-int	pwd(t_commands *args)
+unsigned long long  ft_atoul(char *str)
 {
-	char	buffer[5000];
+	int					i;
+	unsigned long long	res;
 
-	redirect_out(args->out);
-	if (getcwd(buffer, sizeof(buffer)) != NULL)
-		printf("%s\n", buffer);
-	else
-	{
-		perror("pwd");
-		return (1);
-	}
-	return (0);
+	i = 0;
+	res = 0;
+	while (str[i] && (str[i] == 32 || (str[i] >= 9 && str[i] <= 13)))
+		i++;
+	if (str[i] == '-' || str[i] == '+')
+		i++;
+	while (str[i] && str[i] == '0')
+		i++;
+	while (str[i] && str[i] >= '0' && str[i] <= '9')
+		res = (str[i++] - '0') + (res * 10);
+	return (res);
 }

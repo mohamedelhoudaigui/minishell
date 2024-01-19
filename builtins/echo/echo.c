@@ -6,21 +6,21 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 01:09:21 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/18 14:35:59 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/19 01:31:42 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	check_flag(char *flag)
+bool	check_flag(char *flag)
 {
 	int	i;
 
-	i = 1;
 	if (!flag || flag[0] == '\0' || flag[0] != '-')
-		return (0);
-	if (flag[i] == '\0')
 		return (false);
+	if (flag[0] == '-' && flag[1] == '\0')
+		return (false);
+	i = 1;
 	while (flag[i])
 	{
 		if (flag[i] != 'n')
@@ -52,11 +52,7 @@ int	echo(t_commands *command)
 	char	*str;
 	char	**args;
 
-	if (command->out != 1)
-	{
-		dup2(1, command->out);
-		close(command->out);
-	}
+	redirect_out(command->out);
 	args = command->command;
 	flag = check_flag(args[1]);
 	i = 1;
@@ -69,11 +65,11 @@ int	echo(t_commands *command)
 			str = args[i];
 			call_expander(str);
 			if (args[i + 1])
-				printf(" ");
+				write(1, " ", 1);
 			i++;
 		}
 	}
-	if (flag == 0)
+	if (flag == false)
 		printf("\n");
 	return (0);
 }

@@ -1,5 +1,6 @@
-SRCS = ./builtins/echo/echo.c ./builtins/pwd/pwd.c env_vars.c expanding.c minishell.c \
-		./builtins/cd/cd.c ./linked_list/ft_command.c
+SRCS = ./builtins/echo/echo.c ./builtins/pwd/pwd.c env_vars.c minishell.c \
+		./builtins/cd/cd.c ./linked_list/ft_command.c ./builtins/exit/exit.c \
+		./builtins/env/env.c ./builtins/unset/unset.c redirect.c
 
 OBJS = $(SRCS:.c=.o)
 

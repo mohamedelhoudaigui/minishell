@@ -1,28 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/17 10:53:18 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/19 01:31:01 by mel-houd         ###   ########.fr       */
+/*   Created: 2024/01/19 00:23:07 by mel-houd          #+#    #+#             */
+/*   Updated: 2024/01/19 01:31:22 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	pwd(t_commands *args)
+int	env_b(t_list *env_var, t_commands *args)
 {
-	char	buffer[5000];
-
 	redirect_out(args->out);
-	if (getcwd(buffer, sizeof(buffer)) != NULL)
-		printf("%s\n", buffer);
-	else
-	{
-		perror("pwd");
-		return (1);
-	}
+	if (!env_var)
+		return (0);
+	ft_lstprint_str(env_var, args->out);
 	return (0);
 }

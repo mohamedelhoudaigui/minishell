@@ -1,28 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/17 10:53:18 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/19 01:31:01 by mel-houd         ###   ########.fr       */
+/*   Created: 2024/01/19 01:22:37 by mel-houd          #+#    #+#             */
+/*   Updated: 2024/01/19 02:37:51 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	pwd(t_commands *args)
+int	unset(t_list **env_vars, t_commands *args)
 {
-	char	buffer[5000];
-
+	t_list	*node;
+	int		i;
+	char	*var;
+	
+	if (!env_vars || *env_vars == NULL)
+		return (0);
 	redirect_out(args->out);
-	if (getcwd(buffer, sizeof(buffer)) != NULL)
-		printf("%s\n", buffer);
-	else
+	i = 1;
+	while (args->command[i])
 	{
-		perror("pwd");
-		return (1);
+		var = args->command[i];
+		node = ft_lstfind_str(env_vars, var);
+		if (node)
+			remove_env_var(env_vars, &node);
+		i++;
 	}
 	return (0);
 }

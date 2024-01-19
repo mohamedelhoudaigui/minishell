@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 02:25:44 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/18 16:52:11 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/19 02:38:13 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ t_commands	*create_args(void)
 	args = (char **)malloc(sizeof(char *) * 3);
 	if (!args)
 		return (NULL);
-	args[0] = ft_strdup("cd");
-	args[1] = ft_strdup("..");
+	args[0] = ft_strdup("unset");
+	args[1] = ft_strdup("USER");
 	args[2] = NULL;
 	command = ft_new_command(args, 0, 1);
 	if (!command)
@@ -29,11 +29,11 @@ t_commands	*create_args(void)
 	return (command);
 }
 
+
 int	main(int ac, char **av, char **env)
 {
 	(void)ac;
 	(void)av;
-	(void)env;
 	t_list	*env_var;
 	t_commands	*args;
 	
@@ -41,9 +41,7 @@ int	main(int ac, char **av, char **env)
 	env_var = get_env_var(env);
 	if (!args)
 		return (1);
-	ft_lstprint_str(env_var);
-	cd(&env_var, args);
-	ft_lstprint_str(env_var);
+
 	ft_clear_commands(&args);
 	ft_lstclear(&env_var, free);
 	return (0);

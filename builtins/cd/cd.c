@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 10:26:41 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/18 16:51:57 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/19 01:32:28 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,20 @@ int	change_old_pwd(t_list **env_var)
 	return (0);
 }
 
-// int	change_to_home(t_list **env_var)
-// {
-// 	t_list	*home;
-// 	t_list	*pwd;
-// 	t_list	*old_pwd;
+char	*change_to_var(t_list **env_adr, char *var_name)
+{
+	t_list	*var;
+	char	*new_path;
 
-// 	pwd = ft_lstfind_str(&env_var, "PWD=");
-// 	home = ft_lstfind_str(&env_var, "HOME=");
-// 	if (!pwd || !home)
-// 		return (1);
-// }
+	var = ft_lstfind_str(env_adr, var_name);
+	if (!var)
+		return (NULL);
+	new_path = ft_strdup(&var->content[ft_strlen(var_name)]);
+	if (!new_path)
+		return (NULL);
+	return (new_path);
+}
+
 
 int	change_cwd_env(t_list **env_var, char *path)
 {
@@ -44,28 +47,30 @@ int	change_cwd_env(t_list **env_var, char *path)
 int	cd(t_list **env_adr, t_commands *command)
 {
 	char	*path;
-	t_list	*env_var;
 	char	**args;
+	char	*buffer;
 	
+	redirect_out(command->out);
 	args = command->command;
-	env_var = *env_adr;
 	path = args[1];
-	if (access(path, F_OK) == 0)
+	if (path[0] == '\0' || (path[0] == '~' && path[1] == '\0'))
+		path = change_to_var(env_adr, "HOME=");
+	if (path[0] == '-' && path[1] == '\0')
+		path = change_to_var(env_adr, "OLDPWD=");
+	if (chdir(path) == -1)
 	{
-		change_old_pwd(env_adr);
-		if (change_cwd_env(&env_var, path) == 1)
-			return (1);
-		if (chdir(path) == -1)
-		{
-			perror("chdir");
-			return (1);
-		}
-		return (0);
-	}
-	else
-	{
-		perror("access");
+		perror("cd");
 		return (1);
 	}
+	buffer = (char *)ft_calloc(sizeof(char), 5000);
+	if (!buffer)
+		return (1);
+	if (getcwd(buffer, 5000) == NULL)
+		return (1);
+	if (change_old_pwd(env_adr) == 1)
+		return (1);
+	if (change_cwd_env(env_adr, buffer) == 1)
+		return (1);
+	free(buffer);
 	return (0);
 }

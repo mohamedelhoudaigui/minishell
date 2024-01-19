@@ -1,28 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/17 10:53:18 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/19 01:31:01 by mel-houd         ###   ########.fr       */
+/*   Created: 2024/01/19 01:28:24 by mel-houd          #+#    #+#             */
+/*   Updated: 2024/01/19 02:30:55 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "minishell.h"
 
-int	pwd(t_commands *args)
+void	redirect_out(int out)
 {
-	char	buffer[5000];
-
-	redirect_out(args->out);
-	if (getcwd(buffer, sizeof(buffer)) != NULL)
-		printf("%s\n", buffer);
-	else
+	if (out != 1)
 	{
-		perror("pwd");
-		return (1);
+		dup2(1, out);
+		close(out);
 	}
-	return (0);
+}
+
+void	redirect_in(int in)
+{
+	if (in != 0)
+	{
+		dup2(0, in);
+		close(in);
+	}
 }

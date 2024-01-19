@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:40:59 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/18 16:41:22 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/19 02:36:17 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,31 @@ void	update_env_var(t_list **head, char *env_var_name ,char *arg)
 	if (!new_arg)
 		return ;
 	env_var->content = new_arg;
+}
+
+void	remove_env_var(t_list **head, t_list **node)
+{
+	t_list	*prev;
+	t_list	*iter;
+	t_list	*next;
+	t_list	*node_d;
+
+	if (!head || *head == NULL || !node)
+		return ;
+	if (ft_lstsize(*head) == 1)
+	{
+		ft_lstclear(head, free);
+		*head = NULL;
+		return ;
+	}
+	iter = *head;
+	node_d = *node;
+	next = node_d->next;
+	while (iter->next != node_d)
+	{
+		prev = iter;
+		iter = iter->next;
+	}
+	ft_lstdelone(node_d, free);
+	prev->next = next;
 }

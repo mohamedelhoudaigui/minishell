@@ -1,28 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/17 10:53:18 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/19 01:31:01 by mel-houd         ###   ########.fr       */
+/*   Created: 2024/01/18 18:51:41 by mel-houd          #+#    #+#             */
+/*   Updated: 2024/01/19 01:30:11 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	pwd(t_commands *args)
+void    exit_b(t_commands *command, t_list **env_var, t_commands **args)
 {
-	char	buffer[5000];
+    unsigned long long  status;
 
-	redirect_out(args->out);
-	if (getcwd(buffer, sizeof(buffer)) != NULL)
-		printf("%s\n", buffer);
-	else
-	{
-		perror("pwd");
-		return (1);
-	}
-	return (0);
+    redirect_out(command->out);
+    status = ft_atoul(command->command[1]);
+    if (status > 9223372036854775807)
+        status = 255;
+    ft_clear_commands(args);
+	ft_lstclear(env_var, free);
+    exit(status);
 }
