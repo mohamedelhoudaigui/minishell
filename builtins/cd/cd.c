@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 10:26:41 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/19 03:32:43 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/20 00:46:12 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,22 @@ int	change_cwd_env(t_list **env_var, char *path)
 	return (0);
 }
 
+void	handle_path_cases(t_list **env_adr, char *path)
+{
+	if (path[0] == '\0' || (path[0] == '~' && path[1] == '\0'))
+		path = change_to_var(env_adr, "HOME=");
+	else if (path[0] == '-' && path[1] == '\0')
+		path = change_to_var(env_adr, "OLDPWD=");
+}
+
+void	handle_getcwd_cases(char *path, t_list **env_adr)
+{
+	if (path[0] == '.' && path[1] == '\0')
+		join_env_var(env_adr, "PWD=", "/.");
+	else if (path[0] == '.' && path[1] == '.' && path[2] == '\0')
+		join_env_var(env_adr, "PWD=", "/..");
+}
+
 int	cd(t_list **env_adr, t_commands *command)
 {
 	char	*path;
@@ -54,10 +70,7 @@ int	cd(t_list **env_adr, t_commands *command)
 	redirect_in(command->in);
 	args = command->command;
 	path = args[1];
-	if (path[0] == '\0' || (path[0] == '~' && path[1] == '\0'))
-		path = change_to_var(env_adr, "HOME=");
-	if (path[0] == '-' && path[1] == '\0')
-		path = change_to_var(env_adr, "OLDPWD=");
+	handle_path_cases(env_adr, path);
 	if (chdir(path) == -1)
 	{
 		perror("cd");
@@ -67,7 +80,12 @@ int	cd(t_list **env_adr, t_commands *command)
 	if (!buffer)
 		return (1);
 	if (getcwd(buffer, 5000) == NULL)
-		return (1);
+	{
+		perror("getcwd");
+		change_old_pwd(env_adr);
+		handle_getcwd_cases(path, env_adr);
+		return (0);
+	}
 	if (change_old_pwd(env_adr) == 1)
 		return (1);
 	if (change_cwd_env(env_adr, buffer) == 1)

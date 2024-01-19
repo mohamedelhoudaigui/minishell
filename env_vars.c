@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:40:59 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/19 04:30:58 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/19 23:57:41 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	update_env_var(t_list **head, char *env_var_name ,char *arg)
 	char	*new_arg;
 
 	env_var = ft_lstfind_str(head, env_var_name);
-	if (!env_var_name)
+	if (!env_var)
 	{
 		create_env_var(head, env_var_name, arg);
 		return ;
@@ -118,4 +118,22 @@ void	add_env_var(t_list **env_var, char *var_value)
 	if (!node)
 		return ;
 	ft_lstadd_back(env_var, node);
+}
+
+void	join_env_var(t_list **env_var, char *var_name ,char *var_to_join)
+{
+	t_list	*node;
+	char	*new_var;
+
+	node = ft_lstfind_str(env_var, var_name);
+	if (!node)
+	{
+		create_env_var(env_var, var_name, var_to_join);
+		return ;
+	}
+	new_var = ft_strjoin(node->content, var_to_join);
+	if (!new_var)
+		return ;
+	free(node->content);
+	node->content = new_var;
 }

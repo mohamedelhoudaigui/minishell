@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:31:28 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/19 04:32:04 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/19 23:57:28 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	update_env_var(t_list **head, char *env_var_name ,char *arg);
 void	create_env_var(t_list **head, char *env_var_name, char *arg);
 void	remove_env_var(t_list **head, t_list **node);
 void	add_env_var(t_list **env_var, char *var_value);
+void	join_env_var(t_list **env_var, char *var_name ,char *var_to_join);
 
 // echo :
 int		echo(t_commands *command);
