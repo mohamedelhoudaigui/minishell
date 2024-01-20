@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:31:28 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/19 23:57:28 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/20 03:17:11 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,10 @@ int	unset(t_list **env_vars, t_commands *args);
 
 //export :
 void	print_export(t_list *env_var);
+int		calculate_to(char *var);
+int		handle_flag(char *arg);
+char	*get_key(char *arg);
+char	*get_value(char *arg);
 int		export(t_list **env_var, t_commands *args);
 
 #endif
