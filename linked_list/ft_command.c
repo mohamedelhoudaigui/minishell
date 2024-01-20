@@ -6,20 +6,20 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 12:04:23 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/18 14:42:43 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/20 05:57:07 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_commands	*ft_new_command(char **commands, int in, int out)
+t_commands	*ft_new_command(int in, int out)
 {
 	t_commands	*node;
 
 	node = (t_commands *)malloc(sizeof(t_commands));
 	if (!node)
 		return (NULL);
-	node->command = commands;
+	node->command = NULL;
 	node->in = in;
 	node->out = out;
 	node->next = NULL;

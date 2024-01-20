@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 01:09:21 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/19 03:33:05 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/20 06:02:19 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	echo(t_commands *command)
 			str = args[i];
 			call_expander(str);
 			if (args[i + 1])
-				write(1, " ", 1);
+				printf(" ");
 			i++;
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:31:28 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/20 03:17:11 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/20 05:56:39 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,13 @@ typedef struct s_commands
 	struct s_commands	*next;
 }				t_commands ;
 
+// testing :
+t_commands	*create_args(int ac, char **av);
+
+//execution :
+int	execution(int ac, char **av, t_list **env_adr);
+int	redirect_command(t_list **env, t_commands *args);
+
 //redirect :
 void	redirect_out(int out);
 void	redirect_in(int in);
@@ -46,7 +53,7 @@ void    clear_garbage(t_garbg *head);
 void    *garbage(int size, int len, int status);
 
 //linked list:
-t_commands	*ft_new_command(char **commands, int in, int out);
+t_commands	*ft_new_command(int in, int out);
 t_commands	*get_last_command(t_commands **head);
 void		ft_add_command(t_commands **head, t_commands *node);
 void		ft_clear_commands(t_commands **head);
@@ -74,7 +81,7 @@ char	*change_to_var(t_list **env_adr, char *var_name);
 int		change_old_pwd(t_list **env_var);
 
 //exit :
-void    exit_b(t_commands *command, t_list **env_var, t_commands **args);
+void    exit_b(t_commands *command, t_list **env_var);
 
 //env :
 int	env_b(t_list *env_var, t_commands *args);
