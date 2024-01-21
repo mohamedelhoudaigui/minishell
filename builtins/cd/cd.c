@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 10:26:41 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/20 00:46:12 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/20 14:21:00 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,6 @@ int	cd(t_list **env_adr, t_commands *command)
 	char	**args;
 	char	*buffer;
 	
-	redirect_out(command->out);
-	redirect_in(command->in);
 	args = command->command;
 	path = args[1];
 	handle_path_cases(env_adr, path);

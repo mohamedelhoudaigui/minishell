@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_ptrsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/17 10:53:18 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/20 14:26:15 by mel-houd         ###   ########.fr       */
+/*   Created: 2024/01/20 18:23:51 by mel-houd          #+#    #+#             */
+/*   Updated: 2024/01/20 18:25:16 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "libft.h"
 
-int	pwd(void)
+int	ft_ptrsize(void	**ptr)
 {
-	char	buffer[5000];
+	int	i;
 
-	if (getcwd(buffer, sizeof(buffer)) != NULL)
-		printf("%s\n", buffer);
-	else
-	{
-		perror("pwd");
-		return (1);
-	}
-	return (0);
+	if (!ptr)
+		return (-1);
+	i = 0;
+	while (ptr[i])
+		i++;
+	return (i);
 }

@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   ft_free_double.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/17 10:53:18 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/20 14:26:15 by mel-houd         ###   ########.fr       */
+/*   Created: 2024/01/20 18:33:35 by mel-houd          #+#    #+#             */
+/*   Updated: 2024/01/20 18:34:00 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "libft.h"
 
-int	pwd(void)
+void	free_double(void **arg)
 {
-	char	buffer[5000];
+	int	i;
 
-	if (getcwd(buffer, sizeof(buffer)) != NULL)
-		printf("%s\n", buffer);
-	else
-	{
-		perror("pwd");
-		return (1);
-	}
-	return (0);
+	if (!arg)
+		return ;
+	i = 0;
+	while (arg[i])
+		free(arg[i++]);
+	free(arg);
 }

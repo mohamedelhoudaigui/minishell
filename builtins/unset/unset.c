@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 01:22:37 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/19 03:33:45 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/20 14:22:31 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,6 @@ int	unset(t_list **env_vars, t_commands *args)
 	char	*var;
 	char	*var_eq;
 	
-	redirect_out(args->out);
-	redirect_in(args->in);
 	if (!env_vars || *env_vars == NULL || !args->command[1])
 		return (0);
 	i = 1;

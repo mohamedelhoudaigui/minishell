@@ -6,34 +6,11 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 03:28:13 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/20 06:45:02 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/21 13:40:56 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-t_commands	*create_args(int ac, char **av)
-{
-	t_commands *command;
-	char	**args;
-	int		i;
-
-	i = 0;
-	args = (char **)ft_calloc(sizeof(char *), ac);
-	if (!args)
-		return (NULL);
-	while (i < ac - 1)
-	{
-		args[i] = ft_strdup(av[i + 1]);
-		i++;
-	}
-	command = ft_new_command(0, 1);
-	command->command = args;
-	
-	if (!command)
-		return (NULL);
-	return (command);
-}
 
 int	redirect_command(t_list **env, t_commands *args)
 {
@@ -45,7 +22,7 @@ int	redirect_command(t_list **env, t_commands *args)
 	if (ft_strncmp(com_name, "echo", ft_strlen(com_name)) == 0)
 		return_value = echo(args);
 	else if (ft_strncmp(com_name, "pwd", ft_strlen(com_name)) == 0)
-		return_value = pwd(args);
+		return_value = pwd();
 	else if (ft_strncmp(com_name, "cd", ft_strlen(com_name)) == 0)
 		return_value = cd(env, args);
 	else if (ft_strncmp(com_name, "exit", ft_strlen(com_name)) == 0)
@@ -56,24 +33,69 @@ int	redirect_command(t_list **env, t_commands *args)
 		return_value = unset(env, args);
 	else if (ft_strncmp(com_name, "export", ft_strlen(com_name)) == 0)
 		return_value = export(env, args);
+	else
+		return_value = execute_command(*env, args);
 	return (return_value);
 }
 
-int	execution(int ac, char **av, t_list **env_adr)
+int	fork_or_not(t_commands *args)
 {
-	t_commands *args;
-	int			i;
-	int			return_value;
+	if (args->next == NULL)
+	{
+		if (ft_strncmp(args->command[0], "echo", ft_strlen(args->command[0])) == 0)
+			return (0);
+		else if (ft_strncmp(args->command[0], "pwd", ft_strlen(args->command[0])) == 0)
+			return (0);
+		else if (ft_strncmp(args->command[0], "cd", ft_strlen(args->command[0])) == 0)
+			return (0);
+		else if (ft_strncmp(args->command[0], "exit", ft_strlen(args->command[0])) == 0)
+			return (0);
+		else if (ft_strncmp(args->command[0], "env", ft_strlen(args->command[0])) == 0)
+			return (0);
+		else if (ft_strncmp(args->command[0], "unset", ft_strlen(args->command[0])) == 0)
+			return (0);
+		else if (ft_strncmp(args->command[0], "export", ft_strlen(args->command[0])) == 0)
+			return (0);
+	}
+	return (1);
+}
 
-	(void)env_adr;
+int	execution(t_list **env_adr, t_commands *args)
+{
+	int			return_value;
+	int			fork_num;
+	int			*child;
+	int			i;
+
+	redirect_in(args->in);
+	redirect_out(args->out);
+	if (!env_adr || *env_adr == NULL || !args)
+		return (-1);
+	return_value = 0;
+	fork_num = fork_or_not(args);
+	child = (int *)ft_calloc(ft_command_size(args), sizeof(int));
 	i = 0;
-	args = create_args(ac, av);
-	if (!args)
-		return (1);
-	
-	return_value = redirect_command(env_adr, args);
-	// ft_lstprint_str(*env_adr, 1);
-	ft_clear_commands(&args);
-	ft_lstclear(env_adr, free);
-	return (0);
+	if (fork_num == 1)
+	{
+		while (args)
+		{
+			child[i] = fork();
+			if (child[i] == -1)
+				return (-1);
+			if (child[i] == 0)
+				redirect_command(env_adr, args);
+			i++;
+			args = args->next;
+		}
+		if (child[i] != -1 && child[i] != 0)
+		{
+			i = 0;
+			while (i < ft_command_size(args))
+				waitpid(child[i++], NULL, 0);
+		}
+		// infinite loop !!!!
+	}
+	else
+		return_value = redirect_command(env_adr, args);
+	return (return_value);
 }

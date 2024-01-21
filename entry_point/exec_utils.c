@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/17 10:53:18 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/20 14:26:15 by mel-houd         ###   ########.fr       */
+/*   Created: 2024/01/21 13:36:48 by mel-houd          #+#    #+#             */
+/*   Updated: 2024/01/21 13:38:07 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../minishell.h"
 
-int	pwd(void)
+int	ft_command_size(t_commands *args)
 {
-	char	buffer[5000];
+	int	i;
 
-	if (getcwd(buffer, sizeof(buffer)) != NULL)
-		printf("%s\n", buffer);
-	else
+	if (!args)
+		return (0);
+	i = 0;
+	while (args)
 	{
-		perror("pwd");
-		return (1);
+		i++;
+		args = args->next;
 	}
-	return (0);
+	return (i);
 }

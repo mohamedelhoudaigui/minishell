@@ -6,13 +6,19 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:31:28 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/20 05:56:39 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/21 13:38:16 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <paths.h>
+# include <string.h>
+# include <termios.h>
+# include <sys/wait.h>
+# include <signal.h>
+# include <dirent.h>
 # include "./libft/libft.h"
 # include <unistd.h>
 # include <stdlib.h>
@@ -20,8 +26,10 @@
 # include <limits.h>
 # include <fcntl.h>
 # include <stdio.h>
-# include <stdarg.h>
-# include <stdbool.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+
+
 
 typedef struct s_garbg
 {
@@ -38,11 +46,19 @@ typedef struct s_commands
 }				t_commands ;
 
 // testing :
-t_commands	*create_args(int ac, char **av);
+t_commands	*create_args(int ac, char **av, int in, int out);
+
+//execve :
+int		execute_command(t_list *env_var, t_commands *args);
+char	**morph_env(t_list *env_var);
+//here_doc :
+int	here_doc(t_commands *args);
 
 //execution :
-int	execution(int ac, char **av, t_list **env_adr);
+int	execution(t_list **env_adr, t_commands *args);
 int	redirect_command(t_list **env, t_commands *args);
+int	ft_command_size(t_commands *args);
+
 
 //redirect :
 void	redirect_out(int out);
@@ -72,7 +88,7 @@ bool		check_flag(char *flag);
 void	call_expander(char *str);
 
 // pwd :
-int	pwd(t_commands *args);
+int	pwd(void);
 
 //cd :
 int		cd(t_list **env_adr, t_commands *args);
