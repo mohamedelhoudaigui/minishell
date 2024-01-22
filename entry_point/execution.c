@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 03:28:13 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/21 13:40:56 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/22 04:40:06 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,6 @@ int	execution(t_list **env_adr, t_commands *args)
 	int			*child;
 	int			i;
 
-	redirect_in(args->in);
-	redirect_out(args->out);
 	if (!env_adr || *env_adr == NULL || !args)
 		return (-1);
 	return_value = 0;
@@ -83,19 +81,25 @@ int	execution(t_list **env_adr, t_commands *args)
 			if (child[i] == -1)
 				return (-1);
 			if (child[i] == 0)
+			{
+				redirect_in(args->in);
+				redirect_out(args->out);
 				redirect_command(env_adr, args);
+			}
+			else
+			{
+				waitpid(-1, &return_value, 0);
+			}
 			i++;
 			args = args->next;
 		}
-		if (child[i] != -1 && child[i] != 0)
-		{
-			i = 0;
-			while (i < ft_command_size(args))
-				waitpid(child[i++], NULL, 0);
-		}
-		// infinite loop !!!!
+		free(child);
 	}
 	else
+	{
+		redirect_in(args->in);
+		redirect_out(args->out);
 		return_value = redirect_command(env_adr, args);
+	}
 	return (return_value);
 }
