@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 03:28:13 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/22 04:40:06 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/22 06:12:18 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,40 +60,47 @@ int	fork_or_not(t_commands *args)
 	return (1);
 }
 
+
+int	process_job(t_list **env_adr, t_commands *args, int *child, int i)
+{
+	child[i] = fork();
+	if (child[i] == -1)
+		return (-1);
+	if (child[i] == 0)
+	{
+		redirect_in(args->in);
+		redirect_out(args->out);
+		redirect_command(env_adr, args);
+	}
+	return (0);
+}
+
 int	execution(t_list **env_adr, t_commands *args)
 {
 	int			return_value;
 	int			fork_num;
 	int			*child;
+	int			n_commands;
 	int			i;
 
 	if (!env_adr || *env_adr == NULL || !args)
 		return (-1);
 	return_value = 0;
 	fork_num = fork_or_not(args);
-	child = (int *)ft_calloc(ft_command_size(args), sizeof(int));
+	n_commands = ft_command_size(args);
+	child = (int *)ft_calloc(n_commands, sizeof(int));
 	i = 0;
 	if (fork_num == 1)
 	{
 		while (args)
 		{
-			child[i] = fork();
-			if (child[i] == -1)
-				return (-1);
-			if (child[i] == 0)
-			{
-				redirect_in(args->in);
-				redirect_out(args->out);
-				redirect_command(env_adr, args);
-			}
-			else
-			{
-				waitpid(-1, &return_value, 0);
-			}
+			process_job(env_adr, args, child, i);
 			i++;
 			args = args->next;
 		}
-		free(child);
+		i = 0;
+		while (i < n_commands)
+			waitpid(child[i++], &return_value, 0);
 	}
 	else
 	{
@@ -101,5 +108,6 @@ int	execution(t_list **env_adr, t_commands *args)
 		redirect_out(args->out);
 		return_value = redirect_command(env_adr, args);
 	}
+	free(child);
 	return (return_value);
 }

@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 02:25:44 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/22 04:56:51 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/22 06:08:34 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	f()
 	system("leaks minishell");
 }
 
+
 int	main(int ac, char **av, char **env)
 {
 	t_list		*env_var;
@@ -49,14 +50,13 @@ int	main(int ac, char **av, char **env)
 	// atexit(f);
 	if (ac < 2)
 		return (0);
-
 	env_var = get_env_var(env);
 	args = create_args(ac, av, 0, 1);
-	args_2 = create_args(ac, av, 1, 1);
+	args_2 = create_args(ac, av, 0, 1);
 	if (!args || !env_var)
 		return (1);
 	free(args_2->command[0]);
-	args_2->command[0] = ft_strdup("wc");
+	args_2->command[0] = ft_strdup("ls");
 	args->next = args_2;
 	return_value = execution(&env_var, args);
 	ft_lstclear(&env_var, free);
