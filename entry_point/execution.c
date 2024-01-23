@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 03:28:13 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/22 06:12:18 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/23 12:13:28 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +75,49 @@ int	process_job(t_list **env_adr, t_commands *args, int *child, int i)
 	return (0);
 }
 
+int	**create_pipes(int n_pipes)
+{
+	int		i;
+	int	**pipes;
+	
+	if (n_pipes == 0)
+		return (NULL);
+	pipes = (int **)malloc(sizeof(int *) * n_pipes);
+	i = 0;
+	while (i < n_pipes)
+	{
+		pipes[i] = (int *)malloc(sizeof(int) * 2);
+		pipe(pipes[i]);
+		i++;
+	}
+	return (pipes);
+}
+
+void	close_pipes(int **pipes)
+{
+	int	*fd;
+	int	i;
+
+	if (!pipes)
+		return ;
+	i = 0;
+	while (pipes[i])
+	{
+		fd = (int *)pipes[i];
+		close(fd[0]);
+		close(fd[1]);
+		i++;
+	}
+}
+
 int	execution(t_list **env_adr, t_commands *args)
 {
-	int			return_value;
-	int			fork_num;
-	int			*child;
-	int			n_commands;
-	int			i;
+	int		return_value;
+	int		fork_num;
+	int		*child;
+	int		n_commands;
+	int		i;
+	int		**pipes;
 
 	if (!env_adr || *env_adr == NULL || !args)
 		return (-1);
@@ -92,6 +128,7 @@ int	execution(t_list **env_adr, t_commands *args)
 	i = 0;
 	if (fork_num == 1)
 	{
+		pipes = create_pipes(n_commands - 1);
 		while (args)
 		{
 			process_job(env_adr, args, child, i);
@@ -100,7 +137,10 @@ int	execution(t_list **env_adr, t_commands *args)
 		}
 		i = 0;
 		while (i < n_commands)
+		{
 			waitpid(child[i++], &return_value, 0);
+			close_pipes(pipes);
+		}
 	}
 	else
 	{

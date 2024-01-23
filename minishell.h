@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:31:28 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/22 05:36:36 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/22 11:46:31 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,14 @@ typedef struct s_garbg
     void            *ptr;
     struct s_garbg    *next;
 }    t_garbg;
+
+typedef struct s_fd_struct
+{
+	char				**command;
+	char				*in;
+	char				*out;
+	struct s_commands	*next;
+}				t_fd_struct ;
 
 typedef struct s_commands
 {
