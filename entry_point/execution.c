@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 03:28:13 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/23 12:13:28 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/25 02:30:59 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,16 +61,19 @@ int	fork_or_not(t_commands *args)
 }
 
 
-int	process_job(t_list **env_adr, t_commands *args, int *child, int i)
+int	process_job(t_list **env_adr, t_commands *args, int *child, int i, int **pipes, int n_commands)
 {
 	child[i] = fork();
 	if (child[i] == -1)
 		return (-1);
 	if (child[i] == 0)
 	{
+		if (pipes != NULL)
+			redirect_pipes(i, pipes, n_commands);
 		redirect_in(args->in);
 		redirect_out(args->out);
 		redirect_command(env_adr, args);
+		exit(0);
 	}
 	return (0);
 }
@@ -82,7 +85,7 @@ int	**create_pipes(int n_pipes)
 	
 	if (n_pipes == 0)
 		return (NULL);
-	pipes = (int **)malloc(sizeof(int *) * n_pipes);
+	pipes = (int **)ft_calloc(sizeof(int *), n_pipes + 1);
 	i = 0;
 	while (i < n_pipes)
 	{
@@ -125,21 +128,22 @@ int	execution(t_list **env_adr, t_commands *args)
 	fork_num = fork_or_not(args);
 	n_commands = ft_command_size(args);
 	child = (int *)ft_calloc(n_commands, sizeof(int));
+	pipes = NULL;
 	i = 0;
 	if (fork_num == 1)
 	{
 		pipes = create_pipes(n_commands - 1);
 		while (args)
 		{
-			process_job(env_adr, args, child, i);
+			process_job(env_adr, args, child, i, pipes, n_commands);
 			i++;
 			args = args->next;
 		}
+		close_pipes(pipes);
 		i = 0;
 		while (i < n_commands)
 		{
 			waitpid(child[i++], &return_value, 0);
-			close_pipes(pipes);
 		}
 	}
 	else
@@ -149,5 +153,12 @@ int	execution(t_list **env_adr, t_commands *args)
 		return_value = redirect_command(env_adr, args);
 	}
 	free(child);
+	i = 0;
+	if (pipes != NULL)
+	{
+		while (pipes[i])
+			free(pipes[i++]);
+		free(pipes);
+	}
 	return (return_value);
 }

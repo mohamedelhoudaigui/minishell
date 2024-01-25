@@ -2,7 +2,7 @@ SRCS = ./builtins/echo/echo.c ./builtins/pwd/pwd.c env_vars.c minishell.c \
 		./builtins/cd/cd.c ./linked_list/ft_command.c ./builtins/exit/exit.c \
 		./builtins/env/env.c ./builtins/unset/unset.c redirect.c ./builtins/export/export.c \
 		./builtins/export/export_help.c ./entry_point/execution.c ./entry_point/execute_command.c \
-		./entry_point/exec_utils.c
+		./entry_point/exec_utils.c ./entry_point/handle_pipes.c
 
 OBJS = $(SRCS:.c=.o)
 

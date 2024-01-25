@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:31:28 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/22 11:46:31 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/25 01:49:37 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,5 +120,9 @@ int		handle_flag(char *arg);
 char	*get_key(char *arg);
 char	*get_value(char *arg);
 int		export(t_list **env_var, t_commands *args);
+
+//pipes :
+void	redirect_pipes(int i, int **pipes, int n_commands);
+void	close_unused_pipes(int i, int **pipes, int n_commands);
 
 #endif
