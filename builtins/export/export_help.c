@@ -19,7 +19,7 @@ void	print_export(t_list *env_var)
 	while (env_var)
 	{
 		printf("declare -x ");
-		printf("%s\n", env_var->content);
+		printf("%s\n", (char *)env_var->content);
 		env_var = env_var->next;
 	}
 }

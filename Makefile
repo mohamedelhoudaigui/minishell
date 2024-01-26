@@ -6,11 +6,10 @@ SRCS = ./builtins/echo/echo.c ./builtins/pwd/pwd.c env_vars.c minishell.c \
 
 OBJS = $(SRCS:.c=.o)
 
-READLINE = $(shell brew --prefix readline)
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -I${READLINE}/include -g
+CFLAGS = -g
 
 LIBFT = make -C libft && make bonus -C libft
 
@@ -23,7 +22,7 @@ LIBFT_NAME = -lft
 all: libs $(NAME)
 
 $(NAME): $(OBJS) ./libft/libft.a
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L${READLINE}/lib -lft -lreadline -lhistory $(LIBFT_PATH) $(LIBFT_NAME)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LIBFT_PATH) $(LIBFT_NAME)
 
 libs:
 	$(LIBFT)

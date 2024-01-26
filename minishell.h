@@ -26,10 +26,9 @@
 # include <limits.h>
 # include <fcntl.h>
 # include <stdio.h>
-# include <readline/readline.h>
-# include <readline/history.h>
+# include <errno.h>
 
-
+extern int exit_status;
 
 typedef struct s_garbg
 {

@@ -68,7 +68,7 @@ char	*check_command_help(char *com, char **path_splited, int key)
 	while (path_splited[i])
 	{
 		str = ft_strjoin(path_splited[i], com);
-		if (access(str, X_OK) == 0)
+		if (access(str, X_OK) == 0 || errno != 2)
 		{
 			free(com);
 			com = str;
@@ -153,5 +153,7 @@ int	execute_command(t_list *env_var, t_commands *args)
 	checked_args = check_command(args_str[0], splited_path);
 	execve(args_str[0], args_str, env);
 	perror("bash");
-	return (exit_status);
+	if (errno == 13)
+		exit(126);
+	exit(127);
 }

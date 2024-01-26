@@ -43,13 +43,9 @@ static char	*malloc_space(size_t size)
 
 static char	*concate_strings(char const *s1, char const *s2, char *res)
 {
-	char		*d1;
-	char		*d2;
 	size_t		i;
 	size_t		j;
 
-	d1 = (char *)s1;
-	d2 = (char *)s2;
 	i = 0;
 	j = 0;
 	while (s1[i])
