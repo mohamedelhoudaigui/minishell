@@ -1,4 +1,4 @@
-check exit status of builtns or otherexit status
-pipe problems with redirection
+check exit status of builtins or other exit status , done need testing
+pipe problems with redirection, done need testing for multi redirections in multi commands
 implement expander
 

@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 01:22:37 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/20 14:22:31 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/28 00:07:58 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,15 @@ int	unset(t_list **env_vars, t_commands *args)
 	char	*var_eq;
 	
 	if (!env_vars || *env_vars == NULL || !args->command[1])
+	{
+		exit_status = 0;
 		return (0);
+	}
 	i = 1;
 	while (args->command[i])
 	{
 		var = args->command[i];
+		
 		var_eq = ft_strjoin(var, "=");
 		node = ft_lstfind_str(env_vars, var_eq);
 		if (node)
@@ -32,5 +36,6 @@ int	unset(t_list **env_vars, t_commands *args)
 		free(var_eq);
 		i++;
 	}
+	exit_status = 0;
 	return (0);
 }

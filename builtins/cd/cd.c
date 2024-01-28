@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 10:26:41 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/20 14:21:00 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/28 03:48:26 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,14 @@ int	change_cwd_env(t_list **env_var, char *path)
 	return (0);
 }
 
-void	handle_path_cases(t_list **env_adr, char *path)
+char	*handle_path_cases(t_list **env_adr, char **path_d)
 {
-	if (path[0] == '\0' || (path[0] == '~' && path[1] == '\0'))
+	char	*path;
+
+	path = *path_d;
+	if (path == NULL)
 		path = change_to_var(env_adr, "HOME=");
-	else if (path[0] == '-' && path[1] == '\0')
-		path = change_to_var(env_adr, "OLDPWD=");
+	return (path);
 }
 
 void	handle_getcwd_cases(char *path, t_list **env_adr)
@@ -65,13 +67,18 @@ int	cd(t_list **env_adr, t_commands *command)
 	char	*path;
 	char	**args;
 	char	*buffer;
+	int		free_after;
 	
+	free_after = 0;
 	args = command->command;
 	path = args[1];
-	handle_path_cases(env_adr, path);
+	if (path == NULL)
+		free_after = 1;
+	path = handle_path_cases(env_adr, &path);
 	if (chdir(path) == -1)
 	{
 		perror("cd");
+		exit_status = 1;
 		return (1);
 	}
 	buffer = (char *)ft_calloc(sizeof(char), 5000);
@@ -82,6 +89,7 @@ int	cd(t_list **env_adr, t_commands *command)
 		perror("getcwd");
 		change_old_pwd(env_adr);
 		handle_getcwd_cases(path, env_adr);
+		exit_status = 1;
 		return (0);
 	}
 	if (change_old_pwd(env_adr) == 1)
@@ -89,5 +97,8 @@ int	cd(t_list **env_adr, t_commands *command)
 	if (change_cwd_env(env_adr, buffer) == 1)
 		return (1);
 	free(buffer);
+	if (free_after == 1)
+		free(path);
+	exit_status = 0;
 	return (0);
 }

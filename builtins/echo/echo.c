@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 01:09:21 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/20 14:20:51 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/27 14:26:13 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,5 +70,6 @@ int	echo(t_commands *command)
 	}
 	if (flag == false)
 		printf("\n");
+	exit_status = 0;
 	return (0);
 }

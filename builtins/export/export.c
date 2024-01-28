@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 03:28:00 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/20 14:21:53 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/28 00:45:43 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,14 @@ int	export(t_list **env_var, t_commands *args)
 	char	*value;
 
 	if (!env_var)
+	{
+		exit_status = 1;
 		return (1);
+	}
 	if (args->command[1] == NULL)
 	{
 		print_export(*env_var);
+		exit_status = 0;
 		return (0);
 	}
 	i = 1;
@@ -32,7 +36,14 @@ int	export(t_list **env_var, t_commands *args)
 	{
 		arg = args->command[i];
 		flag = handle_flag(arg);
-		if (flag != 2)
+		if (parse_varname(arg) == 1)
+		{
+			ft_putstr_fd("export : not a valid identifier\n", 2);
+			exit_status = 1;
+		}
+		else
+			exit_status = 0;
+		if (flag != 2 && parse_varname(arg) == 0)
 		{
 			key = get_key(arg);
 			value = get_value(arg);

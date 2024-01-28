@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 03:28:13 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/25 02:30:59 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/28 03:37:15 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	redirect_command(t_list **env, t_commands *args)
 	if (ft_strncmp(com_name, "echo", ft_strlen(com_name)) == 0)
 		echo(args);
 	else if (ft_strncmp(com_name, "pwd", ft_strlen(com_name)) == 0)
-		pwd();
+		pwd(args);
 	else if (ft_strncmp(com_name, "cd", ft_strlen(com_name)) == 0)
 		cd(env, args);
 	else if (ft_strncmp(com_name, "exit", ft_strlen(com_name)) == 0)
@@ -74,7 +74,7 @@ int	process_job(t_list **env_adr, t_commands *args, int *child, int i, int **pip
 		redirect_in(args->in);
 		redirect_out(args->out);
 		redirect_command(env_adr, args);
-		exit(0);
+		exit(exit_status);
 	}
 	return (0);
 }

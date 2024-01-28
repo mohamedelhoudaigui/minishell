@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 02:25:44 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/25 03:01:59 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/28 03:40:51 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,28 +36,38 @@ t_commands	*create_args(int ac, char **av, int in, int out)
 	return (command);
 }
 
+void	f()
+{
+	system("leaks minishell");
+}
+
 int	main(int ac, char **av, char **env)
 {
 	t_list		*env_var;
 	t_commands	*args;
 	t_commands *args_2;
-	// t_commands *args_3;
+	t_commands *args_3;
 
+	atexit(f);
 	if (ac < 2)
 		return (0);
 	env_var = get_env_var(env);
 	args = create_args(ac, av, 0, 1);
-	args_2 = create_args(ac, av, 0, 1);
+	// args_2 = create_args(ac, av, 0, 1);
 	// args_3 = create_args(ac, av, 0, 1);
 	if (!args || !env_var)
 		return (1);
-	free(args_2->command[0]);
+	// free(args_2->command[0]);
+	// free(args_2->command[1]);
 	// free(args_3->command[0]);
-	args_2->command[0] = ft_strdup("wc");
-	args->next = args_2;
-	// args_3->command[0] = ft_strdup("wc");
+	// args_2->command[0] = ft_strdup("ls");
+	// args_2->command[1] = ft_strdup("==");
+
+	// args->next = args_2;
+	// args_3->command[0] = ft_strdup("ls");
 	// args_2->next = args_3;
 	execution(&env_var, args);
+	// ft_lstprint_str(env_var, 1);
 	ft_lstclear(&env_var, free);
 	ft_clear_commands(&args);
 	return (exit_status);

@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 03:15:55 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/20 03:22:49 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/28 00:02:12 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,22 @@ char	*get_value(char *arg)
 	if (!value)
 		return (NULL);
 	return (value);
+}
+
+int	parse_varname(char *arg)
+{
+	int	i;
+
+	i = 0;
+	if (!arg)
+		return (1);
+	if (ft_isalpha(arg[0]) == 0)
+		return (1);
+	while (arg[i])
+	{
+		if (ft_isalnum(arg[i]) == 0 && arg[i] != '=' && arg[i] != '_')
+			return (1);
+		i++;
+	}
+	return (0);
 }
