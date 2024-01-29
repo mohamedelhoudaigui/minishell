@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:31:28 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/28 00:08:19 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/29 04:01:16 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,9 @@ typedef struct s_commands
 // testing :
 t_commands	*create_args(int ac, char **av, int in, int out);
 
+//expander :
+char    *expande_var(t_list **env_var, char *var);
+
 //execve :
 int		execute_command(t_list *env_var, t_commands *args);
 char	**morph_env(t_list *env_var);
@@ -65,6 +68,8 @@ int	here_doc(t_commands *args);
 int	execution(t_list **env_adr, t_commands *args);
 int	redirect_command(t_list **env, t_commands *args);
 int	ft_command_size(t_commands *args);
+char	**morph_env(t_list *env_var);
+char	**morph_args(t_commands *args);
 
 
 //redirect :
@@ -111,6 +116,7 @@ int	env_b(t_list *env_var, t_commands *args);
 
 //unset :
 int	unset(t_list **env_vars, t_commands *args);
+int	parse_varname_unset(char *arg);
 
 //export :
 void	print_export(t_list *env_var);

@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 14:19:33 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/22 02:20:38 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/29 02:00:18 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,15 +141,9 @@ int	execute_command(t_list *env_var, t_commands *args)
 	char	**splited_path;
 
 	exit_status = 0;
-	if (!args || args->command == NULL || !env_var)
-		return (1);
 	env = morph_env(env_var);
 	args_str = morph_args(args);
-	if (!env || !args)
-		return (1);
 	splited_path = split_path(env);
-	if (!splited_path)
-		return (1);
 	checked_args = check_command(args_str[0], splited_path);
 	execve(args_str[0], args_str, env);
 	perror("bash");

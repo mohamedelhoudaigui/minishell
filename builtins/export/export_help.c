@@ -6,23 +6,11 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 03:15:55 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/28 00:02:12 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/29 03:20:16 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-void	print_export(t_list *env_var)
-{
-	if (!env_var || env_var->content == NULL)
-		return ;
-	while (env_var)
-	{
-		printf("declare -x ");
-		printf("%s\n", (char *)env_var->content);
-		env_var = env_var->next;
-	}
-}
 
 int	calculate_to(char *var)
 {

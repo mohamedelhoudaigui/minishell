@@ -6,17 +6,27 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 07:29:37 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/20 14:22:21 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/29 05:32:57 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-// no expantion , subject said : << should be given a delimiter,
-// then read the input until a line containing the
-// delimiter is seen. However, it doesn’t have to update the history
+void	check_expansion(char **line_d)
+{
+	char	*line;
+	int		i;
+	char	*result;
 
-// no expande ?? :)
+	if (!line_d || *line_d == NULL)
+		return ;
+	i = 0;
+	line = *line_d;
+	while (line[i])
+	{
+		
+	}
+}
 
 int	here_doc(t_commands *args)
 {
@@ -38,6 +48,7 @@ int	here_doc(t_commands *args)
 			free(read);
 			break ;
 		}
+		check_expantion(&read);
 		write(fd[1], read, ft_strlen(read));
 		write(fd[1], "\n", 1);
 		free(read);

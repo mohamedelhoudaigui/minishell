@@ -1,4 +1,4 @@
 check exit status of builtins or other exit status , done need testing
 pipe problems with redirection, done need testing for multi redirections in multi commands
-implement expander
+implement expander, done need to complete heredoc
 

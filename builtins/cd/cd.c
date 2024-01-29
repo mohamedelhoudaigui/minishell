@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 10:26:41 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/28 03:48:26 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/29 02:53:09 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,11 @@ char	*handle_path_cases(t_list **env_adr, char **path_d)
 	path = *path_d;
 	if (path == NULL)
 		path = change_to_var(env_adr, "HOME=");
+	if (path == NULL)
+	{
+		ft_putstr_fd("cd : HOME not set\n", 2);
+		exit_status = 1;
+	}
 	return (path);
 }
 
@@ -75,6 +80,8 @@ int	cd(t_list **env_adr, t_commands *command)
 	if (path == NULL)
 		free_after = 1;
 	path = handle_path_cases(env_adr, &path);
+	if (path == NULL)
+		return (1);
 	if (chdir(path) == -1)
 	{
 		perror("cd");
