@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 02:25:44 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/29 05:26:33 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/30 13:31:02 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,28 +45,17 @@ int	main(int ac, char **av, char **env)
 {
 	t_list		*env_var;
 	t_commands	*args;
+	t_commands	*args2;
 	char		*expande_value;
+	int			file;
 
-	// atexit(f);
+	atexit(f);
 	if (ac < 2)
 		return (0);
 	env_var = get_env_var(env);
-	args = create_args(ac, av, 0, 1);
-	// args_2 = create_args(ac, av, 0, 1);
-	// args_3 = create_args(ac, av, 0, 1);
-	// free(args_2->command[0]);
-	// free(args_2->command[1]);
-	// free(args_3->command[0]);
-	// args_2->command[0] = ft_strdup("cat");
-	// args_2->command[1] = ft_strdup("-e");
-	// args_2->command[1] = ft_strdup("==");
-	// args->next = args_2;
-	// args_3->command[0] = ft_strdup("ls");
-	// args_2->next = args_3;
+	file = here_doc("ll", &env_var, true);
+	args = create_args(ac, av, file, 1);
 	execution(&env_var, args);
-	// expande_value = expande_var(&env_var, "$?");
-	// printf("%s\n", expande_value);
-	// free(expande_value);
 	ft_lstclear(&env_var, free);
 	ft_clear_commands(&args);
 	return (exit_status);

@@ -6,17 +6,41 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 07:29:37 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/29 05:32:57 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/30 13:29:09 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	check_expansion(char **line_d)
+char	*get_expande_var(char *line)
+{
+	int		i;
+	int		len;
+	char	*value;
+	char	*tmp;
+
+	i = 0;
+	len = 0;
+	while (line[i])
+	{
+		if (line[i] == ' ' || line[i] == '\t')
+			break ;
+		i++;
+		len++;
+	}
+	tmp = ft_substr(line, 0, len);
+	value = ft_strjoin(tmp, "=");
+	free(tmp);
+	return (value);
+}
+
+void	check_expansion(char **line_d, t_list **env_adr, int file)
 {
 	char	*line;
 	int		i;
 	char	*result;
+	char	*expanded_var;
+	char	*value;
 
 	if (!line_d || *line_d == NULL)
 		return ;
@@ -24,21 +48,37 @@ void	check_expansion(char **line_d)
 	line = *line_d;
 	while (line[i])
 	{
-		
+		if (line[i] == '$')
+		{
+			value = get_expande_var(&line[i]);
+			expanded_var = expande_var(env_adr, value);
+			free(value);
+			while (line[i] && line[i + 1] != ' ' && line[i + 1] != '\t')
+				i++;
+			if (expanded_var != NULL)
+			{
+				write(file, expanded_var, ft_strlen(expanded_var));
+				free(expanded_var);
+			}
+		}
+		else
+			write(file, &line[i], 1);
+		i++;
 	}
+	write(file, "\n", 1);
 }
 
-int	here_doc(t_commands *args)
+int	here_doc(char *delimiter ,t_list **env_adr, bool flag)
 {
 	char	*read;
-	char	*delimiter;
-	int		fd[2];
+	int		file;
 
-	delimiter = args->command[1];
-	if (pipe(fd) == -1)
+	file = open("tmp", O_CREAT | O_TRUNC | O_RDWR, 0777);
+	if (!file)
 	{
-		perror("pipe");
-		return (-1);
+		perror("open");
+		exit_status = 1;
+		return (1);
 	}
 	while(1)
 	{
@@ -48,11 +88,16 @@ int	here_doc(t_commands *args)
 			free(read);
 			break ;
 		}
-		check_expantion(&read);
-		write(fd[1], read, ft_strlen(read));
-		write(fd[1], "\n", 1);
+		if (flag == true)
+			check_expansion(&read, env_adr, file);
+		else
+		{
+			write(file, read, ft_strlen(read));
+			write(file, "\n", 1);
+		}
 		free(read);
 	}
-	close(fd[0]);
-	return (fd[1]);
+	close(file);
+	file = open("tmp", O_RDWR, 0777);
+	return (file);
 }

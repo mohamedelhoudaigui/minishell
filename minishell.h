@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:31:28 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/29 04:01:16 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/30 13:29:53 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@
 # include <fcntl.h>
 # include <stdio.h>
 # include <errno.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 extern int exit_status;
 
@@ -62,7 +64,7 @@ char    *expande_var(t_list **env_var, char *var);
 int		execute_command(t_list *env_var, t_commands *args);
 char	**morph_env(t_list *env_var);
 //here_doc :
-int	here_doc(t_commands *args);
+int	here_doc(char *delimiter, t_list **env_adr, bool flag);
 
 //execution :
 int	execution(t_list **env_adr, t_commands *args);

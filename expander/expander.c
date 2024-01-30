@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 03:51:34 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/29 05:24:34 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/30 12:49:17 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,7 @@ char    *expande_var(t_list **env_var, char *var)
     var++;
     node = ft_lstfind_str(env_var, var);
     if (!node || !node->content)
-    {
-        result = ft_strdup("");
-        return (result);
-    }
+        return (NULL);
     node_content = (char *)node->content;
     i = -1;
     while (node_content[++i])

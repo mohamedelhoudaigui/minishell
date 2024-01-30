@@ -1,0 +1,13 @@
+check exit status of builtins or other exit status , done need testing
+pipe problems with redirection, done need testing for multi redirections in multi commands
+implement expander, done need to complete heredoc
+heredoc compilted.
+now we need to tackle file descriptors openning and morph the given struct to produce the execution struct
+
+execution struct :
+{
+    char **command_and_args (cant be NULL in any way possible)
+    int in_file; (default = 0)
+    int out_file; (default = 1)
+}
+
