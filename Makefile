@@ -10,7 +10,7 @@ OBJS = $(SRCS:.c=.o)
 
 CC = cc
 
-CFLAGS = -g
+CFLAGS = -g -Wall -fsanitize=address
 
 LIBFT = make -C libft && make bonus -C libft  
 

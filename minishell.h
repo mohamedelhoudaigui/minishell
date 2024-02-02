@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:31:28 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/30 13:29:53 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/02 00:58:30 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,6 @@
 
 extern int exit_status;
 
-typedef struct s_garbg
-{
-    void            *ptr;
-    struct s_garbg    *next;
-}    t_garbg;
-
 typedef struct s_fd_struct
 {
 	char				**command;
@@ -54,8 +48,30 @@ typedef struct s_commands
 	struct s_commands	*next;
 }				t_commands ;
 
+typedef struct s_redir
+{
+	char			*file_name;
+	int				red_type;
+	struct s_redir	*next;
+}					t_redir ;
+
+typedef struct s_parsing
+{
+	char				**command;
+	t_redir				*in_fd;
+	t_redir				*out_fd;
+	struct s_parsing	*next;
+}				t_parsing ;
+
 // testing :
 t_commands	*create_args(int ac, char **av, int in, int out);
+
+// merging // opening fd : 
+
+// 0 == > O_TRUNC | O_CREAT
+// 1 == >> O_APPEND | O_CREAT
+// 2 == < O_RDONLY
+// 3 == << heredoc
 
 //expander :
 char    *expande_var(t_list **env_var, char *var);
@@ -63,6 +79,7 @@ char    *expande_var(t_list **env_var, char *var);
 //execve :
 int		execute_command(t_list *env_var, t_commands *args);
 char	**morph_env(t_list *env_var);
+
 //here_doc :
 int	here_doc(char *delimiter, t_list **env_adr, bool flag);
 
@@ -78,9 +95,6 @@ char	**morph_args(t_commands *args);
 void	redirect_out(int out);
 void	redirect_in(int in);
 
-//garbage : 
-void    clear_garbage(t_garbg *head);
-void    *garbage(int size, int len, int status);
 
 //linked list:
 t_commands	*ft_new_command(int in, int out);
@@ -132,5 +146,9 @@ int		parse_varname(char *arg);
 //pipes :
 void	redirect_pipes(int i, int **pipes, int n_commands);
 void	close_unused_pipes(int i, int **pipes, int n_commands);
+
+//fd_layer :
+void	close_all_fd(t_commands *args);
+
 
 #endif

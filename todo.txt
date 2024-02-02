@@ -11,3 +11,12 @@ execution struct :
     int out_file; (default = 1)
 }
 
+post-exection form :
+
+{
+    char    **command;
+    t_list  *in_red;
+    t_list  *out_red;
+}
+
+heredoc file is unseted so it cant be deleted even after sleeping (seems like, test it more)

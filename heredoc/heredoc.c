@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 07:29:37 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/30 13:29:09 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/01/31 17:07:02 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,16 +73,16 @@ int	here_doc(char *delimiter ,t_list **env_adr, bool flag)
 	char	*read;
 	int		file;
 
-	file = open("tmp", O_CREAT | O_TRUNC | O_RDWR, 0777);
+	file = open("/tmp/tmp", O_CREAT | O_TRUNC | O_RDWR, 0777);
 	if (!file)
 	{
 		perror("open");
 		exit_status = 1;
-		return (1);
+		return (-1);
 	}
 	while(1)
 	{
-		read = readline(">");
+		read = readline("> ");
 		if (ft_strncmp(read, delimiter, ft_strlen(read)) == 0)
 		{
 			free(read);
@@ -98,6 +98,8 @@ int	here_doc(char *delimiter ,t_list **env_adr, bool flag)
 		free(read);
 	}
 	close(file);
-	file = open("tmp", O_RDWR, 0777);
+	file = open("/tmp/tmp", O_RDWR, 0777);
+	if (unlink("/tmp/tmp") == -1)
+		perror("unlink");
 	return (file);
 }

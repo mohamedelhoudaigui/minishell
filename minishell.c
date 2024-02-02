@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 02:25:44 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/30 13:31:02 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/02 09:35:34 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,22 +41,40 @@ void	f()
 	system("leaks minishell");
 }
 
+void	handle_SIGNINT(int signum)
+{
+	(void)signum;
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
+
 int	main(int ac, char **av, char **env)
 {
-	t_list		*env_var;
-	t_commands	*args;
-	t_commands	*args2;
-	char		*expande_value;
-	int			file;
+	char	*line;
 
-	atexit(f);
-	if (ac < 2)
-		return (0);
-	env_var = get_env_var(env);
-	file = here_doc("ll", &env_var, true);
-	args = create_args(ac, av, file, 1);
-	execution(&env_var, args);
-	ft_lstclear(&env_var, free);
-	ft_clear_commands(&args);
+	while (1)
+	{
+		
+		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, handle_SIGNINT);
+		line = readline("minishell>");
+		if (line == NULL)
+		{
+			printf("\nexit\n");
+			exit(exit_status);
+		}
+		free(line);
+	}
+	
+	// args->next = args2;
+	// args2->next = args3;
+	// args3->next = args4;
+	// args4->next = args5;
+	
+	// execution(&env_var, args);
+	// ft_lstclear(&env_var, free);
+	// ft_clear_commands(&args);
 	return (exit_status);
 }
