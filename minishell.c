@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 02:25:44 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/03 06:10:07 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/03 08:41:18 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,43 +41,60 @@ void	f()
 	system("leaks minishell");
 }
 
+t_parsing	*create_com(char **av)
+{
+	t_parsing	*args;
+	t_redir		*in;
+	t_redir		*out;
+
+	// out = (t_redir *)ft_calloc(1, sizeof(t_redir));
+	// out->file = ft_strdup("/ss");
+	// out->type = 1;
+	// out->next = NULL;
+	out = NULL;
+	in = (t_redir *)ft_calloc(1, sizeof(t_redir));
+	in->file = ft_strdup("/exam");
+	in->type = 1;
+	in->next = NULL;
+	// in = NULL;
+	args = (t_parsing *)ft_calloc(1, sizeof(t_parsing));
+	args->command = (char **)ft_calloc(sizeof(char *), 2);
+	args->command[0] = ft_strdup(av[1]);
+	args->in_fd =  in;
+	args->out_fd = out;
+	args->next = NULL;
+	return (args);
+}
+
 int	main(int ac, char **av, char **env)
 {
 	t_list		*env_var;
 	t_commands	*commands;
 	t_parsing	*args;
-	t_redir		*in;
-	t_redir		*out;
+	// t_parsing	*args2;
 
-	// atexit(f);
-	out = NULL;
-	in = (t_redir *)ft_calloc(1, sizeof(t_redir));
-	in->file = ft_strdup("test.txt");
-	in->type = 1;
-	in->next = NULL;
-	args = (t_parsing *)ft_calloc(1, sizeof(t_parsing));
-	args->command = (char **)ft_calloc(sizeof(char *), 3);
-	args->command[0] = ft_strdup(av[1]);
-	args->command[1] = ft_strdup(av[2]);
-	args->in_fd =  in;
-	args->out_fd = out;
-	args->next = NULL;
-	commands = open_fd(args);
-	env_var = get_env_var(env);
-	execution(&env_var, commands);
+	if (ac < 2)
+		return (0);
+	atexit(f);
+	int o_stdin = dup(0);
+    int o_stdout = dup(1);
+
+	args = create_com(av);
+	// args2 = create_com(av);
+	// free(args2->command[0]);
+	// args2->command[0] = ft_strdup("wc");
+	// args2->in_fd = (t_redir *)ft_calloc(1, sizeof(t_redir));
+	// args2->in_fd = NULL;
+	// args2->out_fd = NULL;
 	// args->next = args2;
-	// args2->next = args3;
-	// args3->next = args4;
-	// args4->next = args5;
-	
-	// execution(&env_var, args);
-	free(args->command[0]);
-	free(args->command[1]);
-	free(args->command);
-	free(args);
-	free(in->file);
-	free(in);
+	env_var = get_env_var(env);
+	commands = open_fd(args, &env_var);
+	execution(&env_var, commands);
 	ft_lstclear(&env_var, free);
+	close_all_fd(commands);
 	ft_clear_commands(&commands);
+	free_parse_args(args);
+	dup2(o_stdin, 0);
+	dup2(o_stdout, 1);
 	return (exit_status);
 }

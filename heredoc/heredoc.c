@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 07:29:37 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/31 17:07:02 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/03 08:26:09 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	check_expansion(char **line_d, t_list **env_adr, int file)
 {
 	char	*line;
 	int		i;
-	char	*result;
 	char	*expanded_var;
 	char	*value;
 

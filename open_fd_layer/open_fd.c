@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 05:00:27 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/03 06:08:15 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/03 09:06:09 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	**alloc_commands(char **com_args)
 	return (res);
 }
 
-int	handle_in_files(t_redir	*in_file)
+int	handle_in_files(t_redir	*in_file, t_list **env_adr)
 {
 	int	fd;
 
@@ -41,8 +41,10 @@ int	handle_in_files(t_redir	*in_file)
 	fd = -1;
 	while (in_file)
 	{
-		if(in_file->type == 1)
+		if (in_file->type == 1)
 			fd = open(in_file->file, O_RDONLY, 0777);
+		if (in_file->type == 3)
+			fd = here_doc(in_file->file, env_adr, false);
 		if (fd == -1)
 		{
 			perror("open");
@@ -65,12 +67,12 @@ int	handle_out_files(t_redir	*out_file)
 	while (out_file)
 	{
 		if(out_file->type == 2)
-			fd = open(out_file->file, O_CREAT | O_RDWR | O_TRUNC, 0777);
+			fd = open(out_file->file, O_CREAT | O_WRONLY | O_TRUNC, 0777);
 		else if (out_file->type == 4)
-			fd = open(out_file->file, O_CREAT | O_RDWR | O_APPEND, 0777);
+			fd = open(out_file->file, O_CREAT | O_WRONLY | O_APPEND, 0777);
 		if (fd == -1)
 		{
-			perror("open");
+			ft_putstr_fd("open: Permission denied\n", 2);
 			break ;
 		}
 		if (out_file->next != NULL)
@@ -100,7 +102,7 @@ void	command_add_back(t_commands **head, t_commands *node)
 	}
 }
 
-t_commands	*open_fd(t_parsing	*commands)
+t_commands	*open_fd(t_parsing	*commands, t_list **env_adr)
 {
 	t_commands	*head;
 	t_commands	*temp;
@@ -116,7 +118,7 @@ t_commands	*open_fd(t_parsing	*commands)
 	in = commands->in_fd;
 	out = commands->out_fd;
 	args = commands->command;
-	head->in = handle_in_files(in);
+	head->in = handle_in_files(in, env_adr);
 	head->out = handle_out_files(out);
 	head->command = alloc_commands(args);
 	commands = commands->next;
@@ -126,11 +128,75 @@ t_commands	*open_fd(t_parsing	*commands)
 		in = commands->in_fd;
 		out = commands->out_fd;
 		args = commands->command;
-		temp->in = handle_in_files(in);
+		temp->in = handle_in_files(in, env_adr);
 		temp->out = handle_out_files(out);
 		temp->command = alloc_commands(args);
 		command_add_back(&head, temp);
 		commands = commands->next;
 	}
+	free_parse_args(commands);
 	return (head);
+}
+
+void	close_all_fd(t_commands *args)
+{
+	int	in;
+	int	out;
+
+	if (!args)
+		return ;
+	while (args)
+	{
+		in = args->in;
+		out = args->out;
+		if (in != 0 && in != 1 && in != 2)
+			close(in);
+		if (out != 0 && out != 1 && out != 2)
+			close(out);
+		args = args->next;
+	}
+}
+
+void	free_parse_args(t_parsing *commands)
+{
+	char	**args;
+	int		i;
+	t_redir	*in;
+	t_redir	*out;
+
+	if (!commands)
+		return ;
+	while (commands)
+	{
+		args = commands->command;
+		in = commands->in_fd;
+		out = commands->out_fd;
+		if (args != NULL)
+		{
+			i = 0;
+			while (args[i])
+				free(args[i++]);
+			free(args);
+		}
+		if (in != NULL)
+		{
+			while (in)
+			{
+				free(in->file);
+				free(in);
+				in = in->next;
+			}
+		}
+		if (out != NULL)
+		{
+			while (out)
+			{
+				free(out->file);
+				free(out);
+				out = out->next;
+			}
+		}
+		free(commands);
+		commands = commands->next;
+	}
 }

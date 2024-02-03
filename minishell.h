@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:31:28 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/03 05:59:04 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/03 08:25:09 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define MINISHELL_H
 
 # include "./libft/libft.h"
+#include <readline/history.h>
+#include <readline/readline.h>
 # include <paths.h>
 # include <string.h>
 # include <termios.h>
@@ -27,8 +29,6 @@
 # include <stdbool.h>
 # include <stdlib.h>
 # include <stdio.h>
-#include <readline/history.h>
-#include <readline/readline.h>
 
 extern int exit_status;
 
@@ -59,11 +59,13 @@ typedef struct s_parsing
 t_commands	*create_args(int ac, char **av, int in, int out);
 
 // merging // opening fd : 
-t_commands	*open_fd(t_parsing	*commands);
+t_commands	*open_fd(t_parsing	*commands, t_list **env_adr);
 char		**alloc_commands(char **com_args);
 void		command_add_back(t_commands **head, t_commands *node);
 int			handle_out_files(t_redir	*out_file);
-int			handle_in_files(t_redir	*in_file);
+int			handle_in_files(t_redir	*in_file, t_list **env_adr);
+void		close_all_fd(t_commands *args);
+void		free_parse_args(t_parsing *commands);
 
 // 0 == > O_TRUNC | O_CREAT
 // 1 == >> O_APPEND | O_CREAT
@@ -143,9 +145,6 @@ int		parse_varname(char *arg);
 //pipes :
 void	redirect_pipes(int i, int **pipes, int n_commands);
 void	close_unused_pipes(int i, int **pipes, int n_commands);
-
-//fd_layer :
-void	close_all_fd(t_commands *args);
 
 
 #endif
