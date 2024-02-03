@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 07:29:37 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/03 08:26:09 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/03 22:48:57 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*get_expande_var(char *line)
 	len = 0;
 	while (line[i])
 	{
-		if (line[i] == ' ' || line[i] == '\t')
+		if (line[i] == ' ' || line[i] == '\t' || line[i] == 34 || line[i] == 39)
 			break ;
 		i++;
 		len++;
@@ -52,7 +52,7 @@ void	check_expansion(char **line_d, t_list **env_adr, int file)
 			value = get_expande_var(&line[i]);
 			expanded_var = expande_var(env_adr, value);
 			free(value);
-			while (line[i] && line[i + 1] != ' ' && line[i + 1] != '\t')
+			while (line[i] && line[i + 1] != ' ' && line[i + 1] != '\t' && line[i + 1] != 34 && line[i + 1] != 39)
 				i++;
 			if (expanded_var != NULL)
 			{
@@ -71,8 +71,11 @@ int	here_doc(char *delimiter ,t_list **env_adr, bool flag)
 {
 	char	*read;
 	int		file;
+	int		read_file;
 
-	file = open("/tmp/tmp", O_CREAT | O_TRUNC | O_RDWR, 0777);
+	file = open("/tmp/.tmp", O_CREAT | O_TRUNC | O_RDWR, 0777);
+	read_file = open("/tmp/.tmp", O_RDWR, 0777);
+	unlink("/tmp/.tmp");
 	if (!file)
 	{
 		perror("open");
@@ -82,7 +85,7 @@ int	here_doc(char *delimiter ,t_list **env_adr, bool flag)
 	while(1)
 	{
 		read = readline("> ");
-		if (ft_strncmp(read, delimiter, ft_strlen(read)) == 0)
+		if (!read || ft_strncmp(read, delimiter, ft_strlen(read)) == 0)
 		{
 			free(read);
 			break ;
@@ -97,8 +100,5 @@ int	here_doc(char *delimiter ,t_list **env_adr, bool flag)
 		free(read);
 	}
 	close(file);
-	file = open("/tmp/tmp", O_RDWR, 0777);
-	if (unlink("/tmp/tmp") == -1)
-		perror("unlink");
-	return (file);
+	return (read_file);
 }

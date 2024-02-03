@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 03:28:13 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/03 04:48:46 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/03 21:12:39 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,15 @@ int	process_job(t_list **env_adr, t_commands *args, int *child, int i, int **pip
 			redirect_pipes(i, pipes, n_commands);
 		redirect_in(args->in);
 		redirect_out(args->out);
-		redirect_command(env_adr, args);
+		if (args->in != -1 && args->out != -1)
+			redirect_command(env_adr, args);
+		else
+		{
+			close_all_fd(args);
+			exit_status = 1;
+			exit(exit_status);
+		}
+		close_all_fd(args);
 		exit(exit_status);
 	}
 	return (0);
@@ -154,7 +162,10 @@ int	execution(t_list **env_adr, t_commands *args)
 	{
 		redirect_in(args->in);
 		redirect_out(args->out);
-		redirect_command(env_adr, args);
+		if (args->in != -1 && args->out != -1)
+			redirect_command(env_adr, args);
+		else
+			exit_status = 1;
 	}
 	free(child);
 	i = 0;

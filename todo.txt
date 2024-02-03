@@ -7,4 +7,4 @@ now we need to tackle file descriptors openning and morph the given struct to pr
 
 heredoc file is unseted so it cant be deleted even after sleeping (seems like, test it more), need test
 
-commands still execute when fd is -1 !
+commands still execute when fd is -1 ! , done fixed

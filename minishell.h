@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:31:28 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/03 08:25:09 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/03 21:00:42 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_redir
   int					type;
   char					*file;
   struct s_redir		*next;
+  bool					flage;
   }						t_redir;
 
 typedef struct s_commands
@@ -66,6 +67,7 @@ int			handle_out_files(t_redir	*out_file);
 int			handle_in_files(t_redir	*in_file, t_list **env_adr);
 void		close_all_fd(t_commands *args);
 void		free_parse_args(t_parsing *commands);
+void		reset_fd(int o_stdin, int o_stdout);
 
 // 0 == > O_TRUNC | O_CREAT
 // 1 == >> O_APPEND | O_CREAT

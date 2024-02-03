@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 05:00:27 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/03 09:06:09 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/03 22:37:32 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,10 @@ int	handle_in_files(t_redir	*in_file, t_list **env_adr)
 		if (in_file->type == 1)
 			fd = open(in_file->file, O_RDONLY, 0777);
 		if (in_file->type == 3)
-			fd = here_doc(in_file->file, env_adr, false);
+			fd = here_doc(in_file->file, env_adr, in_file->flage);
 		if (fd == -1)
 		{
-			perror("open");
+			ft_putstr_fd("open: Error opening file\n", 2);
 			break ;
 		}
 		if (in_file->next != NULL)
@@ -72,7 +72,7 @@ int	handle_out_files(t_redir	*out_file)
 			fd = open(out_file->file, O_CREAT | O_WRONLY | O_APPEND, 0777);
 		if (fd == -1)
 		{
-			ft_putstr_fd("open: Permission denied\n", 2);
+			ft_putstr_fd("open: Error opening file\n", 2);
 			break ;
 		}
 		if (out_file->next != NULL)
@@ -149,10 +149,8 @@ void	close_all_fd(t_commands *args)
 	{
 		in = args->in;
 		out = args->out;
-		if (in != 0 && in != 1 && in != 2)
-			close(in);
-		if (out != 0 && out != 1 && out != 2)
-			close(out);
+		close(in);
+		close(out);
 		args = args->next;
 	}
 }
