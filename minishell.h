@@ -6,39 +6,38 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:31:28 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/02 00:58:30 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/03 05:59:04 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include "./libft/libft.h"
 # include <paths.h>
 # include <string.h>
 # include <termios.h>
 # include <sys/wait.h>
 # include <signal.h>
 # include <dirent.h>
-# include "./libft/libft.h"
 # include <unistd.h>
-# include <stdlib.h>
-# include <stdbool.h>
 # include <limits.h>
 # include <fcntl.h>
-# include <stdio.h>
 # include <errno.h>
-#include <readline/readline.h>
+# include <stdbool.h>
+# include <stdlib.h>
+# include <stdio.h>
 #include <readline/history.h>
+#include <readline/readline.h>
 
 extern int exit_status;
 
-typedef struct s_fd_struct
+typedef struct s_redir
 {
-	char				**command;
-	char				*in;
-	char				*out;
-	struct s_commands	*next;
-}				t_fd_struct ;
+  int					type;
+  char					*file;
+  struct s_redir		*next;
+  }						t_redir;
 
 typedef struct s_commands
 {
@@ -47,13 +46,6 @@ typedef struct s_commands
 	int					out;
 	struct s_commands	*next;
 }				t_commands ;
-
-typedef struct s_redir
-{
-	char			*file_name;
-	int				red_type;
-	struct s_redir	*next;
-}					t_redir ;
 
 typedef struct s_parsing
 {
@@ -67,6 +59,11 @@ typedef struct s_parsing
 t_commands	*create_args(int ac, char **av, int in, int out);
 
 // merging // opening fd : 
+t_commands	*open_fd(t_parsing	*commands);
+char		**alloc_commands(char **com_args);
+void		command_add_back(t_commands **head, t_commands *node);
+int			handle_out_files(t_redir	*out_file);
+int			handle_in_files(t_redir	*in_file);
 
 // 0 == > O_TRUNC | O_CREAT
 // 1 == >> O_APPEND | O_CREAT

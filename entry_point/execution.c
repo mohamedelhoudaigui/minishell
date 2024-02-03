@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 03:28:13 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/29 02:00:03 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/03 04:48:46 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,8 +123,8 @@ int	execution(t_list **env_adr, t_commands *args)
 	int		**pipes;
 	int     status;
 
-	// if (!env_adr || *env_adr == NULL || !args)
-	// 	return (-1);
+	if (!args)
+	 	return (0);
 	fork_num = fork_or_not(args);
 	n_commands = ft_command_size(args);
 	child = (int *)ft_calloc(n_commands, sizeof(int));

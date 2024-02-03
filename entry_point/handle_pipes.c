@@ -6,13 +6,11 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 01:36:46 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/25 02:10:55 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/03 04:52:07 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-
 
 void	close_unused_pipes(int i, int **pipes, int n_commands)
 {
