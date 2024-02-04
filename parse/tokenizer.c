@@ -148,7 +148,7 @@ t_oken *handle_quote(char *line, t_info *info) {
     new_token->join_next = TRUE;
   else
     new_token->join_next = FALSE;
-  info->cursor += j + 1;
+  info->cursor += j;
   return (new_token);
 }
 
@@ -302,13 +302,13 @@ void  chad_readline(t_info *info, t_alloc *alloc_head, t_list **env_adr)
       return;
     }
     join_quotes(info->head, info);
-    // print_tokens(info->head);
     cmd = lexer(info);
     if(cmd == NULL)
     {
       chad_free(info, alloc_head);
       return;
     }
+    
     /// morph args;
     linker(info, env_adr);
     chad_free(info, alloc_head);
@@ -330,6 +330,6 @@ void  main_loop(t_list **env_adr)
     info->alloc_head = alloc_head;
     info->head = NULL;
     chad_readline(info, alloc_head, env_adr);
-    // printf("%p\n", coms);
+
   }
 }

@@ -17,8 +17,6 @@ need expantion in parsing !
 
 redirection with no command is a valid command !!
 
-linked list head is lost after unseting the first variable
-
 export accepts quotes !!
 
 expansion flag in heredoc
