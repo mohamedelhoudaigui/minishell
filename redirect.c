@@ -6,11 +6,11 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 01:28:24 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/03 08:15:12 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/04 15:12:46 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "./inc/execution.h"
 
 void	redirect_out(int out)
 {

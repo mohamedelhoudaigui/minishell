@@ -6,11 +6,11 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 07:29:37 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/03 22:48:57 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/04 14:22:13 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../inc/execution.h"
 
 char	*get_expande_var(char *line)
 {
@@ -73,6 +73,7 @@ int	here_doc(char *delimiter ,t_list **env_adr, bool flag)
 	int		file;
 	int		read_file;
 
+	signal(SIGQUIT, SIG_IGN);
 	file = open("/tmp/.tmp", O_CREAT | O_TRUNC | O_RDWR, 0777);
 	read_file = open("/tmp/.tmp", O_RDWR, 0777);
 	unlink("/tmp/.tmp");
@@ -85,7 +86,12 @@ int	here_doc(char *delimiter ,t_list **env_adr, bool flag)
 	while(1)
 	{
 		read = readline("> ");
-		if (!read || ft_strncmp(read, delimiter, ft_strlen(read)) == 0)
+		if (read == NULL)
+		{
+			write(1, "\n", 1);
+			break ;
+		}
+		if (ft_strncmp(read, delimiter, ft_strlen(read) + ft_strlen(delimiter)) == 0)
 		{
 			free(read);
 			break ;

@@ -6,11 +6,11 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 03:28:00 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/29 03:27:06 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/04 14:23:16 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../../inc/execution.h"
 
 void swap_strings(char **a, char **b)
 {

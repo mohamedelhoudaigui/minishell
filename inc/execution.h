@@ -1,21 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:31:28 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/03 21:00:42 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/04 20:40:16 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#ifndef EXECUTION_H
+# define EXECUTION_H
 
-# include "./libft/libft.h"
-#include <readline/history.h>
-#include <readline/readline.h>
+# include "../libft/libft.h"
+# include "./parse.h"
+# include <readline/history.h>
+# include <readline/readline.h>
 # include <paths.h>
 # include <string.h>
 # include <termios.h>
@@ -32,13 +33,13 @@
 
 extern int exit_status;
 
-typedef struct s_redir
-{
-  int					type;
-  char					*file;
-  struct s_redir		*next;
-  bool					flage;
-  }						t_redir;
+// typedef struct s_redir
+// {
+//   int					type;
+//   char					*file;
+//   struct s_redir		*next;
+//   bool					flage;
+//   }						t_redir;
 
 typedef struct s_commands
 {
@@ -48,25 +49,24 @@ typedef struct s_commands
 	struct s_commands	*next;
 }				t_commands ;
 
-typedef struct s_parsing
-{
-	char				**command;
-	t_redir				*in_fd;
-	t_redir				*out_fd;
-	struct s_parsing	*next;
-}				t_parsing ;
+// typedef struct s_parsing
+// {
+// 	char				**command;
+// 	t_redir				*in_fd;
+// 	t_redir				*out_fd;
+// 	struct s_parsing	*next;
+// }				t_parsing ;
 
 // testing :
 t_commands	*create_args(int ac, char **av, int in, int out);
 
 // merging // opening fd : 
-t_commands	*open_fd(t_parsing	*commands, t_list **env_adr);
+t_commands	*open_fd(t_cmd	*commands, t_list **env_adr);
 char		**alloc_commands(char **com_args);
 void		command_add_back(t_commands **head, t_commands *node);
 int			handle_out_files(t_redir	*out_file);
 int			handle_in_files(t_redir	*in_file, t_list **env_adr);
 void		close_all_fd(t_commands *args);
-void		free_parse_args(t_parsing *commands);
 void		reset_fd(int o_stdin, int o_stdout);
 
 // 0 == > O_TRUNC | O_CREAT

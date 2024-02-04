@@ -6,11 +6,11 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 10:53:18 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/27 20:49:48 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/04 14:23:23 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../../inc/execution.h"
 
 int	pwd(t_commands *args)
 {

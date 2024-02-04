@@ -6,13 +6,11 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 18:51:41 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/27 21:01:08 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/04 14:23:05 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
-
-//need some modification ! protect max long long, throw error and return 255 ! 
+#include "../../inc/execution.h"
 
 void    exit_b(t_commands *command, t_list **env_var)
 {

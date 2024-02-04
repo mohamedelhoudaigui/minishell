@@ -6,11 +6,11 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 10:26:41 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/29 02:53:09 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/04 14:22:46 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../../inc/execution.h"
 
 int	change_old_pwd(t_list **env_var)
 {
@@ -99,10 +99,8 @@ int	cd(t_list **env_adr, t_commands *command)
 		exit_status = 1;
 		return (0);
 	}
-	if (change_old_pwd(env_adr) == 1)
-		return (1);
-	if (change_cwd_env(env_adr, buffer) == 1)
-		return (1);
+	change_old_pwd(env_adr);
+	change_cwd_env(env_adr, buffer);
 	free(buffer);
 	if (free_after == 1)
 		free(path);

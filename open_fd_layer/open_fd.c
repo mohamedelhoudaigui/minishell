@@ -6,11 +6,12 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/03 05:00:27 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/03 22:37:32 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/04 21:19:52 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../inc/execution.h"
+#include "../inc/parse.h"
 
 char	**alloc_commands(char **com_args)
 {
@@ -44,7 +45,7 @@ int	handle_in_files(t_redir	*in_file, t_list **env_adr)
 		if (in_file->type == 1)
 			fd = open(in_file->file, O_RDONLY, 0777);
 		if (in_file->type == 3)
-			fd = here_doc(in_file->file, env_adr, in_file->flage);
+			fd = here_doc(in_file->file, env_adr, in_file->heredoc_ex);
 		if (fd == -1)
 		{
 			ft_putstr_fd("open: Error opening file\n", 2);
@@ -102,7 +103,7 @@ void	command_add_back(t_commands **head, t_commands *node)
 	}
 }
 
-t_commands	*open_fd(t_parsing	*commands, t_list **env_adr)
+t_commands	*open_fd(t_cmd	*commands, t_list **env_adr)
 {
 	t_commands	*head;
 	t_commands	*temp;
@@ -115,9 +116,9 @@ t_commands	*open_fd(t_parsing	*commands, t_list **env_adr)
 	head = (t_commands *)ft_calloc(1, sizeof(t_commands));
 	if (!head)
 		return (NULL);
-	in = commands->in_fd;
-	out = commands->out_fd;
-	args = commands->command;
+	in = commands->redir;
+	out = commands->redir_out;
+	args = commands->cmd;
 	head->in = handle_in_files(in, env_adr);
 	head->out = handle_out_files(out);
 	head->command = alloc_commands(args);
@@ -125,16 +126,15 @@ t_commands	*open_fd(t_parsing	*commands, t_list **env_adr)
 	while (commands)
 	{
 		temp = (t_commands *)ft_calloc(1, sizeof(t_commands));
-		in = commands->in_fd;
-		out = commands->out_fd;
-		args = commands->command;
+		in = commands->redir;
+		out = commands->redir_out;
+		args = commands->cmd;
 		temp->in = handle_in_files(in, env_adr);
 		temp->out = handle_out_files(out);
 		temp->command = alloc_commands(args);
 		command_add_back(&head, temp);
 		commands = commands->next;
 	}
-	free_parse_args(commands);
 	return (head);
 }
 
@@ -142,7 +142,6 @@ void	close_all_fd(t_commands *args)
 {
 	int	in;
 	int	out;
-
 	if (!args)
 		return ;
 	while (args)
@@ -152,49 +151,5 @@ void	close_all_fd(t_commands *args)
 		close(in);
 		close(out);
 		args = args->next;
-	}
-}
-
-void	free_parse_args(t_parsing *commands)
-{
-	char	**args;
-	int		i;
-	t_redir	*in;
-	t_redir	*out;
-
-	if (!commands)
-		return ;
-	while (commands)
-	{
-		args = commands->command;
-		in = commands->in_fd;
-		out = commands->out_fd;
-		if (args != NULL)
-		{
-			i = 0;
-			while (args[i])
-				free(args[i++]);
-			free(args);
-		}
-		if (in != NULL)
-		{
-			while (in)
-			{
-				free(in->file);
-				free(in);
-				in = in->next;
-			}
-		}
-		if (out != NULL)
-		{
-			while (out)
-			{
-				free(out->file);
-				free(out);
-				out = out->next;
-			}
-		}
-		free(commands);
-		commands = commands->next;
 	}
 }

@@ -6,11 +6,11 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 03:51:34 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/30 12:49:17 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/04 14:22:18 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../inc/execution.h"
 
 char    *expande_exit_status()
 {

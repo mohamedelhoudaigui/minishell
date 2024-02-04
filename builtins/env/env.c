@@ -6,11 +6,11 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 00:23:07 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/29 02:54:23 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/04 14:22:56 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../../inc/execution.h"
 
 int	env_b(t_list *env_var, t_commands *args)
 {
