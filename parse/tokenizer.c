@@ -92,6 +92,8 @@ void handle_operator(char *line, t_info *info) {
   }
 }
 
+
+// not fin
 void  join_quotes(t_oken *head, t_info *info)
 {
   t_oken *token = head;
@@ -277,6 +279,7 @@ void  chad_readline(t_info *info, t_alloc *alloc_head, t_list **env_adr)
     if (!line)
     {
       chad_free(info ,alloc_head);
+      printf("\nexit\n");
       exit(exit_status);
     }
     if (line[0] == '\0' || line_is_empty(line))
@@ -319,6 +322,7 @@ void  main_loop(t_list **env_adr)
 
   while (TRUE)
   {
+    signal(SIGQUIT, SIG_IGN);
    info = ft_calloc(1, sizeof(t_info));
     alloc_head = ft_calloc(1, sizeof(t_alloc));
     alloc_head->next = NULL;

@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:40:59 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/04 14:21:30 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/04 23:55:40 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,13 @@ void	remove_env_var(t_list **head, t_list **node)
 		{
 			*head = (*node)->next;
 			(*node)->next = NULL;
+			ft_lstdelone(*node, free);
+			return ;
+		}
+		else if ((*head)->next != NULL)
+		{
+			node_d = (*head)->next;
+			*head = node_d;
 			ft_lstdelone(*node, free);
 			return ;
 		}

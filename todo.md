@@ -14,15 +14,11 @@ need expantion in parsing !
 
 /// merge todo :
 
-cat | cat | cat | ls
 
 redirection with no command is a valid command !!
-
-
-use after free check sanitizer
 
 linked list head is lost after unseting the first variable
 
 export accepts quotes !!
 
-command with no args doesnt execute
+expansion flag in heredoc
