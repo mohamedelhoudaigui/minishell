@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 03:15:55 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/05 00:03:27 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/05 05:14:43 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	parse_varname(char *arg)
 		return (1);
 	while (arg[i])
 	{
-		if (ft_isalnum(arg[i]) == 0 && arg[i] != '=' && arg[i] != '_')
+		if (ft_isalnum(arg[i]) == 0 && arg[i] != '=' && arg[i] != '_' && arg[i] != ' ' && arg[i] != '+')
 			return (1);
 		i++;
 	}
