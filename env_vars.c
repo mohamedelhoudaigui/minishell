@@ -6,11 +6,32 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:40:59 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/05 05:48:02 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/05 05:57:48 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./inc/execution.h"
+
+t_list	*give_empty_env()
+{
+	char	*pwd;
+	char	*underscore;
+	char	*shlvl;
+	t_list	*head;
+	t_list	*tmp;
+	char	buffer[5000];
+
+	getcwd(buffer, 5000);
+	pwd = ft_strjoin("PWD=", buffer);
+	head = ft_lstnew(pwd);
+	underscore = ft_strdup("_=/usr/bin/env");
+	tmp = ft_lstnew(underscore);
+	ft_lstadd_back(&head, tmp);
+	shlvl = ft_strdup("SHLVL=1");
+	tmp = ft_lstnew(shlvl);
+	ft_lstadd_back(&head, tmp);
+	return (head);
+}
 
 t_list	*get_env_var(char **env)
 {
@@ -19,10 +40,7 @@ t_list	*get_env_var(char **env)
 	t_list	*node;
 
 	if (!env || env[0] == NULL)
-	{
-		
-		return (NULL);
-	}
+		return (give_empty_env());
 	i = 0;
 	head = ft_lstnew(ft_strdup(env[i]));
 	if (env[1] == NULL)
