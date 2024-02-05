@@ -83,6 +83,12 @@ bool	check_token_syntax(t_oken *tokens)
 		printf("syntax error near unexpected token `|'\n");
 		return (TRUE);
 	}
+	while (tokens->next)
+	{
+		tokens = tokens->next;
+	}
+	if (tokens->data_type == PIPE)
+		return (TRUE);
 	// while (tokens)
 	// {
 	// 	if (tokens == NULL)

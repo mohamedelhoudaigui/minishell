@@ -260,11 +260,11 @@ void  linker(t_info *info, t_list **env_adr)
 
   o_stdin = dup(0);
   o_stdout = dup(1);
-    exec_coms = open_fd(info->cmd, env_adr);
-    execution(env_adr, exec_coms);
-    close_all_fd(exec_coms);
-    ft_clear_commands(&exec_coms);
-    reset_fd(o_stdin, o_stdout);
+  exec_coms = open_fd(info->cmd, env_adr);
+  execution(env_adr, exec_coms);
+  close_all_fd(exec_coms);
+  ft_clear_commands(&exec_coms);
+  reset_fd(o_stdin, o_stdout);
 
 }
 
@@ -303,6 +303,7 @@ void  chad_readline(t_info *info, t_alloc *alloc_head, t_list **env_adr)
     }
     join_quotes(info->head, info);
     cmd = lexer(info);
+    print_all_cmd(cmd);
     if(cmd == NULL)
     {
       chad_free(info, alloc_head);
@@ -311,6 +312,7 @@ void  chad_readline(t_info *info, t_alloc *alloc_head, t_list **env_adr)
     
     /// morph args;
     linker(info, env_adr);
+
     chad_free(info, alloc_head);
 }
 
@@ -322,7 +324,6 @@ void  main_loop(t_list **env_adr)
 
   while (TRUE)
   {
-    signal(SIGQUIT, SIG_IGN);
    info = ft_calloc(1, sizeof(t_info));
     alloc_head = ft_calloc(1, sizeof(t_alloc));
     alloc_head->next = NULL;
