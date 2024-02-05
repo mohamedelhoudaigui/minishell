@@ -165,7 +165,6 @@ void	handle_redir_out(t_oken *tokens, t_info *info, t_cmd *cmd)
 			head = head->next;
 		head->next = redir;
 	}
-	print_redir(redir);
 }
 
 void	handle_redir_in(t_oken *tokens, t_info *info, t_cmd *cmd)

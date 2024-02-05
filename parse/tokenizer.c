@@ -114,44 +114,6 @@ void  join_quotes(t_oken *head, t_info *info)
   }
 }
 
-t_oken *handle_quote(char *line, t_info *info) {
-  // handling quotes by taking everything inside them regardless;
-  // update quote type
-  //quotes not working if they are the last token
-  char *str_token;
-  t_oken *new_token;
-  int j = 0;
-  info->cursor += 1;
-  int i = info->cursor;
-  int len = quote_len(line, info);
-  if (len == -1)
-    return NULL;
-  str_token = (char *)chad_alloc(1, len + 1, info->alloc_head);
-  while (j < len && str_token[j] && line[i]) {
-    str_token[j] = line[i];
-    j++;
-    i++;
-  }
-  str_token[len] = '\0';
-  new_token = add_token(str_token, info);
-
-  if (line[info->cursor - 1] == DQUOTE)
-    new_token->quote_type = 1;
-  else
-    new_token->quote_type = 0;
-  new_token->data_type = WORD;
-  // does not support different quotes joining
-  // flag the in handle_word and join them
-  if (line[i + 1] == DQUOTE && new_token->quote_type == 1)
-    new_token->join_next = TRUE;
-  else if (line[i + 1] == QUOTE && new_token->quote_type == 0)
-    new_token->join_next = TRUE;
-  else
-    new_token->join_next = FALSE;
-  info->cursor += j;
-  return (new_token);
-}
-
 t_oken *handle_word(char *line, t_info *info) {
   char *str_token;
   t_oken *new_token;
@@ -178,6 +140,48 @@ t_oken *handle_word(char *line, t_info *info) {
   new_token->data_type = 6;
   return (new_token);
 }
+
+t_oken *handle_quote(char *line, t_info *info) {
+  // handling quotes by taking everything inside them regardless;
+  // update quote type
+  //quotes not working if they are the last token
+  char *str_token;
+  t_oken *new_token;
+  int j = 0;
+  info->cursor += 1;
+  int i = info->cursor;
+  int len = quote_len(line, info);
+  if (len == -1)
+    return NULL;
+  str_token = (char *)chad_alloc(1, len + 1, info->alloc_head);
+  while (j < len) {
+    str_token[j] = line[i];
+    j++;
+    i++;
+  }
+  str_token[len] = '\0';
+  new_token = add_token(str_token, info);
+
+  if (line[info->cursor - 1] == DQUOTE)
+    new_token->quote_type = 1;
+  else
+    new_token->quote_type = 0;
+  new_token->data_type = WORD;
+  // does not support different quotes joining
+  // flag the in handle_word and join them
+  if (line[i + 1] == DQUOTE)
+    new_token->join_next = TRUE;
+  else if (line[i + 1] == QUOTE)
+    new_token->join_next = TRUE;
+  else if (line[i + 1] != ' ' && line[i + 1] != '\0' && line[i + 1] != PIPE_CHAR && line[i + 1] != REDIR_OUT_CHAR && line[i + 1] != REDIR_IN_CHAR)
+    new_token->join_next = TRUE;
+  else
+    new_token->join_next = FALSE;
+  info->cursor += j + 1;
+  return (new_token);
+}
+
+
 
 void handle_dollar(char *line, t_info *info) {
   t_oken *new_token = handle_word(line, info);
@@ -268,18 +272,39 @@ void  linker(t_info *info, t_list **env_adr)
 
 }
 
+void  remove_empty_tokens(t_oken *head)
+{
+  t_oken *token;
+  t_oken *next;
+
+  token = head;
+  while (token)
+  {
+    next = token->next;
+    if (token->token[0] == ' ')
+    {
+      if (token->prev)
+        token->prev->next = token->next;
+      if (token->next)
+        token->next->prev = token->prev;
+      // free(token->token);
+      // free(token);
+    }
+    token = next;
+  }
+}
+
 void  chad_readline(t_info *info, t_alloc *alloc_head, t_list **env_adr)
 {
   char *line;
   t_cmd *cmd;
 
-  
+
     info->cursor = 0;
     line = readline("Lbroshell$ ");
     if (!line)
     {
       chad_free(info ,alloc_head);
-      printf("\nexit\n");
       exit(exit_status);
     }
     if (line[0] == '\0' || line_is_empty(line))
@@ -287,13 +312,6 @@ void  chad_readline(t_info *info, t_alloc *alloc_head, t_list **env_adr)
       chad_free(info, alloc_head);
       return;
     }
-    // else if (strcmp(line, "exit") == 0)
-    // {
-    //   chad_free(info, alloc_head);
-
-    //   // atexit(f);
-    //   exit(0);
-    // }
     add_history(line);
     info->line = line;
     if (!tokenizer(line, info))
@@ -303,16 +321,12 @@ void  chad_readline(t_info *info, t_alloc *alloc_head, t_list **env_adr)
     }
     join_quotes(info->head, info);
     cmd = lexer(info);
-    print_all_cmd(cmd);
     if(cmd == NULL)
     {
       chad_free(info, alloc_head);
       return;
     }
-    
-    /// morph args;
     linker(info, env_adr);
-
     chad_free(info, alloc_head);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 03:28:13 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/05 01:54:28 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/05 04:13:49 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	redirect_command(t_list **env, t_commands *args)
 
 int	fork_or_not(t_commands *args)
 {
-	if (args->next == NULL)
+	if (args && args->next == NULL && args->command[0] != NULL)
 	{
 		if (ft_strncmp(args->command[0], "echo", ft_strlen(args->command[0])) == 0)
 			return (0);
