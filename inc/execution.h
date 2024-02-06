@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:31:28 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/05 05:49:52 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/05 17:39:34 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,7 @@
 # include <stdlib.h>
 # include <stdio.h>
 
-extern int exit_status;
-
-// typedef struct s_redir
-// {
-//   int					type;
-//   char					*file;
-//   struct s_redir		*next;
-//   bool					flage;
-//   }						t_redir;
+extern int	exit_status;
 
 typedef struct s_commands
 {
@@ -47,20 +39,11 @@ typedef struct s_commands
 	int					in;
 	int					out;
 	struct s_commands	*next;
-}				t_commands ;
-
-// typedef struct s_parsing
-// {
-// 	char				**command;
-// 	t_redir				*in_fd;
-// 	t_redir				*out_fd;
-// 	struct s_parsing	*next;
-// }				t_parsing ;
-
+}				t_commands;
 // testing :
 t_commands	*create_args(int ac, char **av, int in, int out);
 
-// merging // opening fd : 
+//opening fd : 
 t_commands	*open_fd(t_cmd	*commands, t_list **env_adr);
 char		**alloc_commands(char **com_args);
 void		command_add_back(t_commands **head, t_commands *node);
@@ -69,33 +52,29 @@ int			handle_in_files(t_redir	*in_file, t_list **env_adr);
 void		close_all_fd(t_commands *args);
 void		reset_fd(int o_stdin, int o_stdout);
 
-// 0 == > O_TRUNC | O_CREAT
-// 1 == >> O_APPEND | O_CREAT
-// 2 == < O_RDONLY
-// 3 == << heredoc
-
 //expander :
-char    *expande_var(t_list **env_var, char *var);
+char		*expande_var(t_list **env_var, char *var);
 
 //execve :
-int		execute_command(t_list *env_var, t_commands *args);
-char	**morph_env(t_list *env_var);
+int			execute_command(t_list *env_var, t_commands *args);
+char		**morph_env(t_list *env_var);
 
 //here_doc :
-int	here_doc(char *delimiter, t_list **env_adr, bool flag);
+int			here_doc(char *delimiter, t_list **env_adr, bool flag);
+void		check_expansion(char **line_d, t_list **env_adr, int file);
+char		*get_expande_var(char *line);
 
 //execution :
-int	execution(t_list **env_adr, t_commands *args);
-int	redirect_command(t_list **env, t_commands *args);
-int	ft_command_size(t_commands *args);
-char	**morph_env(t_list *env_var);
-char	**morph_args(t_commands *args);
+int			execution(t_list **env_adr, t_commands *args);
+int			redirect_command(t_list **env, t_commands *args);
+int			ft_command_size(t_commands *args);
+char		**morph_env(t_list *env_var);
+char		**morph_args(t_commands *args);
 
 
 //redirect :
-void	redirect_out(int out);
-void	redirect_in(int in);
-
+void		redirect_out(int out);
+void		redirect_in(int in);
 
 //linked list:
 t_commands	*ft_new_command(int in, int out);
@@ -104,13 +83,13 @@ void		ft_add_command(t_commands **head, t_commands *node);
 void		ft_clear_commands(t_commands **head);
 
 // env_vars : 
-t_list	*get_env_var(char **env);
-void	update_env_var(t_list **head, char *env_var_name ,char *arg);
-void	create_env_var(t_list **head, char *env_var_name, char *arg);
-void	remove_env_var(t_list **head, t_list **node);
-void	add_env_var(t_list **env_var, char *var_value);
-void	join_env_var(t_list **env_var, char *var_name ,char *var_to_join);
-t_list	*give_empty_env();
+t_list		*get_env_var(char **env);
+void		update_env_var(t_list **head, char *env_var_name ,char *arg);
+void		create_env_var(t_list **head, char *env_var_name, char *arg);
+void		remove_env_var(t_list **head, t_list **node);
+void		add_env_var(t_list **env_var, char *var_value);
+void		join_env_var(t_list **env_var, char *var_name ,char *var_to_join);
+t_list		*give_empty_env();
 
 // echo :
 int		echo(t_commands *command);

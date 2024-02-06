@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 02:25:44 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/05 06:10:13 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/05 14:09:09 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,16 @@ void	incr_shell_lvl(t_list **env_adr)
 	{
 		cont = node->content;
 		i = 0;
-		while (cont[i - 1] != '=')
+		while (cont[i] != '=')
 			i++;
+		i++;
 		num = ft_strdup(&cont[i]);
 		i = ft_atoi(num);
 		free(num);
 		i++;
 		num = ft_itoa(i);
 		new_cont = ft_strjoin("SHLVL=", num);
+		free(num);
 		free(node->content);
 		node->content = new_cont;
 	}
@@ -58,6 +60,7 @@ int	main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	env_var = get_env_var(env);
+	
 	incr_shell_lvl(&env_var);
 	main_loop(&env_var);
 	return (exit_status);

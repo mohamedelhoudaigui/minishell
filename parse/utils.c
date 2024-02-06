@@ -2,12 +2,24 @@
 
 #include "../inc/parse.h"
 
+bool  line_is_empty(char *line)
+{
+  int i = 0;
+  while (line[i])
+  {
+    if (line[i] != ' ')
+      return FALSE;
+    i++;
+  }
+  return TRUE;
+}
+
 void parse_error(const char *exit_msg, t_info *info) {
   printf("%s\n", exit_msg);
       free(info->line);
       free(info);
       free_all(info->alloc_head);
-  exit(1);
+  exit(exit_status);
 }
 
 void print_arr(char **str) {
@@ -88,33 +100,38 @@ int word_len(t_info *info) {
   return (j);
 }
 
-//segv here when u start the line with a quote
 bool valid_quotes(t_info *info) {
   char *line;
   int i;
-  int quote_c;
-  int dquote_c;
 
   line = info->line;
-  i = 0;
-  quote_c = 0;
-  dquote_c = 0;
-  while (line[i]) {
-    if (line[i] == DQUOTE)
-      dquote_c++;
-    if (line[i] == QUOTE)
-      quote_c++;
+  i = info->cursor - 1;
+
+  if (line[i] == DQUOTE)
+  {
     i++;
+    if (line[i] == DQUOTE)
+      return (TRUE);
+    while (line[i])
+    {
+      if (line[i] == DQUOTE)
+        return (TRUE);
+      i++;
+    }
   }
-  if (dquote_c % 2 != 0 && dquote_c != 0) {
-    printf("invalid quotes\n");
-    return (FALSE);
+  else if (line[i] == QUOTE)
+  {
+    i++;
+    if (line[i] == QUOTE)
+      return (TRUE);
+    while (line[i])
+    {
+      if (line[i] == QUOTE)
+        return (TRUE);
+      i++;
+    }
   }
-  if (quote_c % 2 != 0 && quote_c != 0) {
-    printf("invalid quotes\n");
-    return (FALSE);
-  }
-  return (TRUE);
+  return (FALSE);
 }
 
 const char *translate(int c) {
@@ -136,12 +153,12 @@ const char *translate(int c) {
 void print_tokens(t_oken *head_token) {
   t_oken *ptr = head_token;
   while (ptr->next != NULL) {
-    printf("token :%s--quote value =>%d--type =>%s , join_next : %d \n", ptr->token,
-           ptr->quote_type, translate(ptr->data_type), ptr->join_next);
+    printf("token :%s--quote value =>%d--type =>%s , join_next : %d | dollar presence : %d\n", ptr->token,
+           ptr->quote_type, translate(ptr->data_type), ptr->join_next, ptr->dollar_presence);
     ptr = ptr->next;
   }
-    printf("token :%s--quote value =>%d--type =>%s , join_next : %d\n", ptr->token,
-           ptr->quote_type, translate(ptr->data_type), ptr->join_next);
+    printf("token :%s--quote value =>%d--type =>%s , join_next : %d | dollar presence : %d\n", ptr->token,
+           ptr->quote_type, translate(ptr->data_type), ptr->join_next, ptr->dollar_presence);
 }
 
  char *chad_strdup(const char *s1, t_alloc *alloc_head) {

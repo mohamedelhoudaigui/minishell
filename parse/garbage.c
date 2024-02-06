@@ -1,18 +1,28 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   garbage.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mlamkadm <mlamkadm@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/05 09:27:22 by mlamkadm          #+#    #+#             */
+/*   Updated: 2024/02/05 09:27:38 by mlamkadm         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../inc/garbage.h"
 #include "../libft/libft.h"
 #include <stdio.h>
 
+
 void add_address(void *address, t_alloc *head) {
 	t_alloc *iter = head;
-  // puts("adding address");
   while (iter->next != NULL) {
 	iter = iter->next;
   }
   t_alloc *new_alloc_node = ft_calloc(1, sizeof(t_alloc));
   head = iter;
   head->next = new_alloc_node;
-  // printf("address: %p\n", new_alloc_node);
   new_alloc_node->address = address;
   new_alloc_node->alloc_node = new_alloc_node;
   new_alloc_node->next = NULL;
@@ -47,8 +57,6 @@ void free_all(t_alloc *head) {
     {
     free(tmp->address);
     free(tmp->alloc_node);
-    // tmp->address = NULL;
-    // tmp->alloc_node = NULL;
     }
   }
     free(head->address);

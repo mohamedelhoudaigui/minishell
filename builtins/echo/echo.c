@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 01:09:21 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/04 14:22:52 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/05 11:49:53 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	call_expander(char *str)
 	i = 0;
 	while (str[i])
 	{
-		printf("%c", str[i]);
+		write(1, &str[i], 1);
 		i++;
 	}
 	return ;
@@ -64,12 +64,12 @@ int	echo(t_commands *command)
 			str = args[i];
 			call_expander(str);
 			if (args[i + 1])
-				printf(" ");
+				write(1, " ", 1);
 			i++;
 		}
 	}
 	if (flag == false)
-		printf("\n");
+		write(1, "\n", 1);
 	exit_status = 0;
 	return (0);
 }

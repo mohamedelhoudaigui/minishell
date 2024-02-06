@@ -7,6 +7,7 @@
 #include "garbage.h"
 #include "macros.h"
 #include <limits.h>
+#include "../libft/libft.h"
 #include <readline/history.h>
 #include <readline/readline.h>
 #include <stdbool.h>
@@ -14,14 +15,15 @@
 #include <unistd.h>
 #include <string.h>
 
+extern int exit_status;
+
 typedef struct s_token {
   int data_type;
   char *token;
   struct s_token *next;
   struct s_token *prev;
   bool dollar_presence;
-  bool  join_next; // words should also be joined if they connect with a quote.
-                        // done
+  bool  join_next;
   int quote_type;
 } t_oken;
 
@@ -40,15 +42,9 @@ typedef struct s_redir {
   struct s_redir *next;
   } t_redir;
 
-  typedef struct s_var
-  {
-    char *name;
-    char *value;
-    struct s_var *next;
-  } t_var;
-
 typedef struct s_info {
   t_alloc *alloc_head;
+  t_list **env;
   t_cmd *cmd;
   char *line;
   int cursor;
@@ -81,6 +77,14 @@ char	*chad_strjoin(const char *s1, const char *s2, t_alloc *alloc_head);
 char *chad_strdup(const char *s1, t_alloc *alloc_head);
 void	print_redir(t_redir *redir);
 bool	check_token_syntax(t_oken *tokens);
+void  chad_free(t_info *info, t_alloc *alloc_head);
+bool  line_is_empty(char *line);
+t_info *tokenizer(char *line, t_info *info);
+void  join_quotes(t_oken *head, t_info *info);
+
+bool	check_dollar_presence(t_oken *tokens);
+
+int		return_dollar_index(char *str);
 
 
 #endif

@@ -14,9 +14,3 @@ need expantion in parsing !
 
 /// merge todo :
 
-
-redirection with no command is a valid command !!
-
-export accepts quotes !!
-
-expansion flag in heredoc

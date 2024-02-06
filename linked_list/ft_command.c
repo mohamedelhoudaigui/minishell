@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 12:04:23 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/04 14:21:18 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/05 17:34:31 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	ft_add_command(t_commands **head, t_commands *node)
 	t_commands	*last;
 
 	if (!node || !head || *head == NULL)
-		return ;	
+		return ;
 	last = get_last_command(head);
 	last->next = node;
 }

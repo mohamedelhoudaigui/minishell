@@ -1,11 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tokenizer.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mlamkadm <mlamkadm@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/05 09:11:48 by mlamkadm          #+#    #+#             */
+/*   Updated: 2024/02/05 10:30:58by mlamkadm         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 #include "../inc/parse.h"
 #include "../inc/execution.h"
 
 bool check_line(char *line, t_info *info) // for checking early parse errors
 {
-  if (!valid_quotes(info))
-    return FALSE;
   while (line[info->cursor]) {
     if (!is_space(line[info->cursor])) 
       return TRUE;
@@ -100,7 +110,7 @@ void  join_quotes(t_oken *head, t_info *info)
   t_oken *next = head->next;
   while (next)
   {
-    if (/*token->quote_type == next->quote_type && */token->join_next == TRUE)
+    if (token->join_next == TRUE)
     {
       token->token = chad_strjoin(token->token, next->token, info->alloc_head);
       token->next = next->next;
@@ -127,7 +137,6 @@ t_oken *handle_word(char *line, t_info *info) {
     i++;
   }
   str_token[len] = '\0';
-  // word + quotes are joinning, but quotes + word are not
   new_token = add_token(str_token, info);
     if (line[i] == DQUOTE)
     new_token->join_next = TRUE;
@@ -142,13 +151,16 @@ t_oken *handle_word(char *line, t_info *info) {
 }
 
 t_oken *handle_quote(char *line, t_info *info) {
-  // handling quotes by taking everything inside them regardless;
-  // update quote type
-  //quotes not working if they are the last token
   char *str_token;
   t_oken *new_token;
   int j = 0;
+
   info->cursor += 1;
+  if (!valid_quotes(info))
+  {
+    parse_error("syntax error : invalid quotes", info);
+    chad_free(info, info->alloc_head);
+  }
   int i = info->cursor;
   int len = quote_len(line, info);
   if (len == -1)
@@ -167,13 +179,11 @@ t_oken *handle_quote(char *line, t_info *info) {
   else
     new_token->quote_type = 0;
   new_token->data_type = WORD;
-  // does not support different quotes joining
-  // flag the in handle_word and join them
-  if (line[i + 1] == DQUOTE)
+  if (line[i + 1] == DQUOTE && line[i + 1] != '\0')
     new_token->join_next = TRUE;
-  else if (line[i + 1] == QUOTE)
+  else if (line[i + 1] == QUOTE && line[i + 1] != '\0' && line[i + 1])
     new_token->join_next = TRUE;
-  else if (line[i + 1] != ' ' && line[i + 1] != '\0' && line[i + 1] != PIPE_CHAR && line[i + 1] != REDIR_OUT_CHAR && line[i + 1] != REDIR_IN_CHAR)
+  else if (line[i + 1] != ' ' && line[i + 1] != '\0' && line[i + 1] != PIPE_CHAR && line[i + 1] != REDIR_OUT_CHAR && line[i + 1] != REDIR_IN_CHAR )
     new_token->join_next = TRUE;
   else
     new_token->join_next = FALSE;
@@ -186,6 +196,7 @@ t_oken *handle_quote(char *line, t_info *info) {
 void handle_dollar(char *line, t_info *info) {
   t_oken *new_token = handle_word(line, info);
   new_token->dollar_presence = TRUE;
+  // print_tokens(info->head);
 }
 
 t_info *tokenizer(char *line, t_info *info) {
@@ -201,19 +212,22 @@ t_info *tokenizer(char *line, t_info *info) {
     {
       handle_quote(line, info);
     }
-    else if (ft_isprint(line[info->cursor]) && !is_space(line[info->cursor]) && !is_operator(line[info->cursor]) && !is_quote(line[info->cursor]))
+    else if (ft_isprint(line[info->cursor]) && !is_space(line[info->cursor]) && !is_operator(line[info->cursor]) && !is_quote(line[info->cursor]) && line[info->cursor] != '$')
     {
 
       handle_word(line, info);
     }
-    else if (line[info->cursor] == '$')
+    else if (line[info->cursor] == '$') // tokenize everything dollar as word then expand
       handle_dollar(line, info);
     else if (is_space(line[info->cursor]))
       info->cursor++;
   }
   return (info);
-}
+} 
+
+
 void f(void)
+
 {
   fprintf(stderr, "exiting\n");
   system("leaks minishell");
@@ -237,114 +251,3 @@ void print_cmd_and_redir(t_cmd *cmd) {
 }
 
 
-bool  line_is_empty(char *line)
-{
-  int i = 0;
-  while (line[i])
-  {
-    if (line[i] != ' ')
-      return FALSE;
-    i++;
-  }
-  return TRUE;
-}
-
-void  chad_free(t_info *info, t_alloc *alloc_head)
-{
-  free(info->line);
-  free(info);
-  free_all(alloc_head);
-}
-
-void  linker(t_info *info, t_list **env_adr)
-{
-  t_commands  *exec_coms;
-  int   o_stdin;
-  int   o_stdout;
-
-  o_stdin = dup(0);
-  o_stdout = dup(1);
-  exec_coms = open_fd(info->cmd, env_adr);
-  execution(env_adr, exec_coms);
-  close_all_fd(exec_coms);
-  ft_clear_commands(&exec_coms);
-  reset_fd(o_stdin, o_stdout);
-
-}
-
-void  remove_empty_tokens(t_oken *head)
-{
-  t_oken *token;
-  t_oken *next;
-
-  token = head;
-  while (token)
-  {
-    next = token->next;
-    if (token->token[0] == ' ')
-    {
-      if (token->prev)
-        token->prev->next = token->next;
-      if (token->next)
-        token->next->prev = token->prev;
-      // free(token->token);
-      // free(token);
-    }
-    token = next;
-  }
-}
-
-void  chad_readline(t_info *info, t_alloc *alloc_head, t_list **env_adr)
-{
-  char *line;
-  t_cmd *cmd;
-
-
-    info->cursor = 0;
-    line = readline("Lbroshell$ ");
-    if (!line)
-    {
-      chad_free(info ,alloc_head);
-      exit(exit_status);
-    }
-    if (line[0] == '\0' || line_is_empty(line))
-    {
-      chad_free(info, alloc_head);
-      return;
-    }
-    add_history(line);
-    info->line = line;
-    if (!tokenizer(line, info))
-    {
-      chad_free(info, alloc_head);
-      return;
-    }
-    join_quotes(info->head, info);
-    cmd = lexer(info);
-    if(cmd == NULL)
-    {
-      chad_free(info, alloc_head);
-      return;
-    }
-    linker(info, env_adr);
-    chad_free(info, alloc_head);
-}
-
-void  main_loop(t_list **env_adr)
-{
-  t_info *info;
-  t_alloc *alloc_head;
-
-
-  while (TRUE)
-  {
-   info = ft_calloc(1, sizeof(t_info));
-    alloc_head = ft_calloc(1, sizeof(t_alloc));
-    alloc_head->next = NULL;
-    alloc_head->address = ft_strdup("placeholder");
-    info->alloc_head = alloc_head;
-    info->head = NULL;
-    chad_readline(info, alloc_head, env_adr);
-
-  }
-}

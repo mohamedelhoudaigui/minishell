@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 10:26:41 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/04 14:22:46 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/05 17:37:34 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ char	*change_to_var(t_list **env_adr, char *var_name)
 	return (new_path);
 }
 
-
 int	change_cwd_env(t_list **env_var, char *path)
 {
 	update_env_var(env_var, "PWD=", path);
@@ -67,30 +66,33 @@ void	handle_getcwd_cases(char *path, t_list **env_adr)
 		join_env_var(env_adr, "PWD=", "/..");
 }
 
-int	cd(t_list **env_adr, t_commands *command)
+char	*initialize_path(t_list **env_adr, t_commands *command, int *free_after)
 {
-	char	*path;
 	char	**args;
-	char	*buffer;
-	int		free_after;
-	
-	free_after = 0;
+	char	*path;
+
+	*free_after = 0;
 	args = command->command;
 	path = args[1];
 	if (path == NULL)
-		free_after = 1;
+		*free_after = 1;
 	path = handle_path_cases(env_adr, &path);
-	if (path == NULL)
-		return (1);
+	return (path);
+}
+
+int		change_directory(char *path)
+{
 	if (chdir(path) == -1)
 	{
 		perror("cd");
 		exit_status = 1;
 		return (1);
 	}
-	buffer = (char *)ft_calloc(sizeof(char), 5000);
-	if (!buffer)
-		return (1);
+	return (0);
+}
+
+int	handle_buffer(t_list **env_adr, char *path, char *buffer)
+{
 	if (getcwd(buffer, 5000) == NULL)
 	{
 		perror("getcwd");
@@ -99,6 +101,25 @@ int	cd(t_list **env_adr, t_commands *command)
 		exit_status = 1;
 		return (0);
 	}
+	return (1);
+}
+
+int	cd(t_list **env_adr, t_commands *command)
+{
+	char	*path;
+	char	*buffer;
+	int		free_after;
+
+	path = initialize_path(env_adr, command, &free_after);
+	if (path == NULL)
+		return (1);
+	if (change_directory(path))
+		return (1);
+	buffer = (char *)ft_calloc(sizeof(char), 5000);
+	if (!buffer)
+		return (1);
+	if (!handle_buffer(env_adr, path, buffer))
+		return (0);
 	change_old_pwd(env_adr);
 	change_cwd_env(env_adr, buffer);
 	free(buffer);

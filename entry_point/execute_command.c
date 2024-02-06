@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 14:19:33 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/05 04:07:40 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/05 16:19:45 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,7 @@ char	**split_path(char **env)
 
 int	execute_command(t_list *env_var, t_commands *args)
 {
+	
 	int		exit_status;
 	char	**env;
 	char	**args_str;

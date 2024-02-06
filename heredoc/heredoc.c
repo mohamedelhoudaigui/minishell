@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 07:29:37 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/04 14:22:13 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/05 17:34:01 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,40 +34,7 @@ char	*get_expande_var(char *line)
 	return (value);
 }
 
-void	check_expansion(char **line_d, t_list **env_adr, int file)
-{
-	char	*line;
-	int		i;
-	char	*expanded_var;
-	char	*value;
-
-	if (!line_d || *line_d == NULL)
-		return ;
-	i = 0;
-	line = *line_d;
-	while (line[i])
-	{
-		if (line[i] == '$')
-		{
-			value = get_expande_var(&line[i]);
-			expanded_var = expande_var(env_adr, value);
-			free(value);
-			while (line[i] && line[i + 1] != ' ' && line[i + 1] != '\t' && line[i + 1] != 34 && line[i + 1] != 39)
-				i++;
-			if (expanded_var != NULL)
-			{
-				write(file, expanded_var, ft_strlen(expanded_var));
-				free(expanded_var);
-			}
-		}
-		else
-			write(file, &line[i], 1);
-		i++;
-	}
-	write(file, "\n", 1);
-}
-
-int	here_doc(char *delimiter ,t_list **env_adr, bool flag)
+int	here_doc(char *delimiter, t_list **env_adr, bool flag)
 {
 	char	*read;
 	int		file;
@@ -83,7 +50,7 @@ int	here_doc(char *delimiter ,t_list **env_adr, bool flag)
 		exit_status = 1;
 		return (-1);
 	}
-	while(1)
+	while (1)
 	{
 		read = readline("> ");
 		if (read == NULL)
@@ -91,7 +58,8 @@ int	here_doc(char *delimiter ,t_list **env_adr, bool flag)
 			write(1, "\n", 1);
 			break ;
 		}
-		if (ft_strncmp(read, delimiter, ft_strlen(read) + ft_strlen(delimiter)) == 0)
+		if (ft_strncmp(read, delimiter, ft_strlen(read)
+				+ ft_strlen(delimiter)) == 0)
 		{
 			free(read);
 			break ;

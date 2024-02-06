@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 00:23:07 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/04 14:22:56 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/05 17:04:53 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	env_b(t_list *env_var, t_commands *args)
 {
 	if (!env_var)
 	{
-		exit_status = 0;	
+		exit_status = 0;
 		return (0);
 	}
 	ft_lstprint_str(env_var, args->out);
