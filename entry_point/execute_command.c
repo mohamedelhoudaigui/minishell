@@ -6,58 +6,11 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 14:19:33 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/05 16:19:45 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/06 19:32:57 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/execution.h"
-
-char	**morph_env(t_list *env_var)
-{
-	char	**env;
-	int		size;
-	int		i;
-
-	if (!env_var || env_var->content == NULL)
-		return (NULL);
-	size = ft_lstsize(env_var);
-	env = (char **)ft_calloc(sizeof(char *), size + 1);
-	if (!env)
-		return (NULL);
-	i = 0;
-	while (i < size)
-	{
-		env[i] = ft_strdup(env_var->content);
-		i++;
-		env_var = env_var->next;
-	}
-	return (env);
-}
-
-char	**morph_args(t_commands *args)
-{
-	char	**old_args;
-	int		i;
-	char	**args_str;
-	int		size;
-
-	if(!args || args->command == NULL)
-		return (NULL);
-	old_args = args->command;
-	size = ft_ptrsize((void **)old_args);
-	if (size == -1)
-		return (NULL);
-	args_str = (char **)ft_calloc(sizeof(char *), size + 1);
-	if (!args_str)
-		return (NULL);
-	i = 0;
-	while (old_args[i])
-	{
-		args_str[i] = ft_strdup(old_args[i]);
-		i++;
-	}
-	return (args_str);
-}
 
 char	*check_command_help(char *com, char **path_splited, int key)
 {
@@ -134,7 +87,6 @@ char	**split_path(char **env)
 
 int	execute_command(t_list *env_var, t_commands *args)
 {
-	
 	int		exit_status;
 	char	**env;
 	char	**args_str;
@@ -147,8 +99,16 @@ int	execute_command(t_list *env_var, t_commands *args)
 	splited_path = split_path(env);
 	checked_args = check_command(args_str[0], splited_path);
 	execve(args_str[0], args_str, env);
-	perror("bash");
 	if (errno == 13)
+	{
+		ft_putstr_fd("bash : command not found or permission denied\n", 2);
 		exit(126);
-	exit(127);
+	}
+	else if (errno == 2)
+	{
+		ft_putstr_fd("bash : command not found or permission denied\n", 2);
+		exit(127);
+	}
+	perror("bash");
+	return (0);
 }

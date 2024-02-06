@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 10:53:18 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/05 17:15:59 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/06 17:40:26 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	pwd(t_commands *args)
 	if (args && args->command && args->command[1])
 	{
 		ft_putstr_fd("pwd : invalid argument\n", 2);
-		exit_status = 1;
+		g_exit_status = 1;
 		return (1);
 	}
 	if (getcwd(buffer, sizeof(buffer)) != NULL)
@@ -29,5 +29,5 @@ int	pwd(t_commands *args)
 		perror("pwd");
 		return (1);
 	}
-	return (exit_status);
+	return (g_exit_status);
 }

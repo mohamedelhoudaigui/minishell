@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 07:29:37 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/05 17:34:01 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/06 18:56:49 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,24 +34,43 @@ char	*get_expande_var(char *line)
 	return (value);
 }
 
-int	here_doc(char *delimiter, t_list **env_adr, bool flag)
+int	open_files(int *file, int *read_file)
 {
-	char	*read;
-	int		file;
-	int		read_file;
-
-	signal(SIGQUIT, SIG_IGN);
-	file = open("/tmp/.tmp", O_CREAT | O_TRUNC | O_RDWR, 0777);
-	read_file = open("/tmp/.tmp", O_RDWR, 0777);
+	*file = open("/tmp/.tmp", O_CREAT | O_TRUNC | O_RDWR, 0777);
+	*read_file = open("/tmp/.tmp", O_RDWR, 0777);
 	unlink("/tmp/.tmp");
-	if (!file)
+	if (!*file)
 	{
 		perror("open");
-		exit_status = 1;
+		g_exit_status = 1;
 		return (-1);
 	}
+	return (0);
+}
+
+void	handle_read(char **read, t_list **env_adr, int file, bool flag)
+{
+	if (flag == true)
+		check_expansion(read, env_adr, file);
+	else
+	{
+		write(file, *read, ft_strlen(*read));
+		write(file, "\n", 1);
+	}
+	free(*read);
+}
+
+int	here_doc(char *delimiter, t_list **env_adr, bool flag)
+{
+	char		*read;
+	int			file;
+	int			read_file;
+
+	if (open_files(&file, &read_file) == -1)
+		return (-1);
 	while (1)
 	{
+		signal(SIGQUIT, SIG_IGN);
 		read = readline("> ");
 		if (read == NULL)
 		{
@@ -59,19 +78,12 @@ int	here_doc(char *delimiter, t_list **env_adr, bool flag)
 			break ;
 		}
 		if (ft_strncmp(read, delimiter, ft_strlen(read)
-				+ ft_strlen(delimiter)) == 0)
+			+ ft_strlen(delimiter)) == 0)
 		{
 			free(read);
 			break ;
 		}
-		if (flag == true)
-			check_expansion(&read, env_adr, file);
-		else
-		{
-			write(file, read, ft_strlen(read));
-			write(file, "\n", 1);
-		}
-		free(read);
+		handle_read(&read, env_adr, file, flag);
 	}
 	close(file);
 	return (read_file);

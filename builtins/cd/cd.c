@@ -6,57 +6,11 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 10:26:41 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/05 17:37:34 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/06 17:38:15 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/execution.h"
-
-int	change_old_pwd(t_list **env_var)
-{
-	t_list	*pwd;
-
-	pwd = ft_lstfind_str(env_var, "PWD=");
-	if (!pwd)
-		return (1);
-	update_env_var(env_var, "OLDPWD=", &pwd->content[4]);
-	return (0);
-}
-
-char	*change_to_var(t_list **env_adr, char *var_name)
-{
-	t_list	*var;
-	char	*new_path;
-
-	var = ft_lstfind_str(env_adr, var_name);
-	if (!var)
-		return (NULL);
-	new_path = ft_strdup(&var->content[ft_strlen(var_name)]);
-	if (!new_path)
-		return (NULL);
-	return (new_path);
-}
-
-int	change_cwd_env(t_list **env_var, char *path)
-{
-	update_env_var(env_var, "PWD=", path);
-	return (0);
-}
-
-char	*handle_path_cases(t_list **env_adr, char **path_d)
-{
-	char	*path;
-
-	path = *path_d;
-	if (path == NULL)
-		path = change_to_var(env_adr, "HOME=");
-	if (path == NULL)
-	{
-		ft_putstr_fd("cd : HOME not set\n", 2);
-		exit_status = 1;
-	}
-	return (path);
-}
 
 void	handle_getcwd_cases(char *path, t_list **env_adr)
 {
@@ -80,12 +34,12 @@ char	*initialize_path(t_list **env_adr, t_commands *command, int *free_after)
 	return (path);
 }
 
-int		change_directory(char *path)
+int	change_directory(char *path)
 {
 	if (chdir(path) == -1)
 	{
 		perror("cd");
-		exit_status = 1;
+		g_exit_status = 1;
 		return (1);
 	}
 	return (0);
@@ -98,7 +52,7 @@ int	handle_buffer(t_list **env_adr, char *path, char *buffer)
 		perror("getcwd");
 		change_old_pwd(env_adr);
 		handle_getcwd_cases(path, env_adr);
-		exit_status = 1;
+		g_exit_status = 1;
 		return (0);
 	}
 	return (1);
@@ -125,6 +79,6 @@ int	cd(t_list **env_adr, t_commands *command)
 	free(buffer);
 	if (free_after == 1)
 		free(path);
-	exit_status = 0;
+	g_exit_status = 0;
 	return (0);
 }

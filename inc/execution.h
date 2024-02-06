@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:31:28 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/06 01:22:09 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/06 17:23:42 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <paths.h>
-# include <string.h>
-# include <termios.h>
 # include <sys/wait.h>
 # include <signal.h>
 # include <dirent.h>
@@ -31,7 +29,7 @@
 # include <stdlib.h>
 # include <stdio.h>
 
-extern int	exit_status;
+extern int	g_exit_status;
 
 typedef struct s_commands
 {
@@ -40,6 +38,7 @@ typedef struct s_commands
 	int					out;
 	struct s_commands	*next;
 }				t_commands;
+
 // testing :
 t_commands	*create_args(int ac, char **av, int in, int out);
 
@@ -71,7 +70,6 @@ int			ft_command_size(t_commands *args);
 char		**morph_env(t_list *env_var);
 char		**morph_args(t_commands *args);
 
-
 //redirect :
 void		redirect_out(int out);
 void		redirect_in(int in);
@@ -84,53 +82,61 @@ void		ft_clear_commands(t_commands **head);
 
 // env_vars : 
 t_list		*get_env_var(char **env);
-void		update_env_var(t_list **head, char *env_var_name ,char *arg);
+void		update_env_var(t_list **head, char	*env_var_name, char *arg);
 void		create_env_var(t_list **head, char *env_var_name, char *arg);
 void		remove_env_var(t_list **head, t_list **node);
 void		add_env_var(t_list **env_var, char *var_value);
-void		join_env_var(t_list **env_var, char *var_name ,char *var_to_join);
-t_list		*give_empty_env();
+void		join_env_var(t_list **env_var, char *var_name, char *var_to_join);
+t_list		*give_empty_env(void);
+void		add_env_var(t_list **env_var, char *var_value);
 
 // echo :
-int		echo(t_commands *command);
+int			echo(t_commands *command);
 bool		check_flag(char *flag);
-void	call_expander(char *str);
+void		call_expander(char *str);
 
 // pwd :
-int	pwd(t_commands *args);
+int			pwd(t_commands *args);
 
 //cd :
-int		cd(t_list **env_adr, t_commands *args);
-int		change_cwd_env(t_list **env_var, char *path);
-char	*change_to_var(t_list **env_adr, char *var_name);
-int		change_old_pwd(t_list **env_var);
+int			cd(t_list **env_adr, t_commands *args);
+int			change_cwd_env(t_list **env_var, char *path);
+char		*change_to_var(t_list **env_adr, char *var_name);
+int			change_old_pwd(t_list **env_var);
+char		*change_to_var(t_list **env_adr, char *var_name);
+int			change_cwd_env(t_list **env_var, char *path);
+char		*handle_path_cases(t_list **env_adr, char **path_d);
 
 //exit :
-void    exit_b(t_commands *command, t_list **env_var);
+void		exit_b(t_commands *command, t_list **env_var);
 
 //env :
-int	env_b(t_list *env_var, t_commands *args);
+int			env_b(t_list *env_var, t_commands *args);
 
 //unset :
-int	unset(t_list **env_vars, t_commands *args);
-int	parse_varname_unset(char *arg);
+int			unset(t_list **env_vars, t_commands *args);
+int			parse_varname_unset(char *arg);
 
 //export :
-void	print_export(t_list *env_var);
-int		calculate_to(char *var);
-int		handle_flag(char *arg);
-char	*get_key(char *arg);
-char	*get_value(char *arg);
-int		export(t_list **env_var, t_commands *args);
-int		parse_varname(char *arg);
+void		print_export(t_list *env_var);
+int			calculate_to(char *var);
+int			handle_flag(char *arg);
+char		*get_key(char *arg);
+char		*get_value(char *arg);
+int			export(t_list **env_var, t_commands *args);
+int			parse_varname(char *arg);
+void		swap_strings(char **a, char **b);
+void		bubble_sort_string(char **env, int size);
 
 //pipes :
-void	redirect_pipes(int i, int **pipes, int n_commands);
-void	close_unused_pipes(int i, int **pipes, int n_commands);
+void		redirect_pipes(int i, int **pipes, int n_commands);
+void		close_unused_pipes(int i, int **pipes, int n_commands);
 
 //signals :
-void	cmd_sig_handel(int signo);
-void	cmd_sig_loop(int signo);
 
+void		sig_int(int signo);
+void		sig_command(int signo);
+void		cmd_sig_loop(void);
+void		cmd_sig_fork(void);
 
 #endif

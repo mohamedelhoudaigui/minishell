@@ -5,6 +5,9 @@ SRCS = ./builtins/echo/echo.c ./builtins/pwd/pwd.c env_vars.c minishell.c \
         ./entry_point/exec_utils.c ./entry_point/handle_pipes.c ./expander/expander.c \
         ./open_fd_layer/open_fd.c  ./heredoc/heredoc.c ./heredoc/heredoc_help.c ./parse/garbage.c ./parse/parser.c \
 		./parse/utils.c ./parse/tokenizer.c ./linker.c ./open_fd_layer/open_fd_help.c ./signals/cmd_signal.c \
+		./builtins/cd/cd_help.c ./builtins/export/export_help2.c env_vars2.c ./entry_point/execute_command_help.c \
+		./parse/exit_status.c ./parse/expansion.c ./parse/parser_utils.c ./parse/print_helper.c ./parse/redir_utils.c \
+		./parse/redirections.c ./parse/syntax.c ./parse/tokenizer_utils.c
 
 OBJS = $(SRCS:.c=.o)
 

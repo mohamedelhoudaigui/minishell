@@ -6,14 +6,14 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 02:25:44 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/06 01:11:35 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/06 17:37:55 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./inc/execution.h"
 #include "./inc/parse.h"
 
-int exit_status;
+int	g_exit_status;
 
 void	reset_fd(int o_stdin, int o_stdout)
 {
@@ -23,33 +23,48 @@ void	reset_fd(int o_stdin, int o_stdout)
 	close(o_stdout);
 }
 
+int	get_shell_lvl(char *cont)
+{
+	int		i;
+	char	*num;
+
+	i = 0;
+	while (cont[i] != '=')
+		i++;
+	i++;
+	num = ft_strdup(&cont[i]);
+	i = ft_atoi(num);
+	free(num);
+	return (i);
+}
+
+void	set_shell_lvl(t_list *node, int lvl)
+{
+	char	*num;
+	char	*new_cont;
+
+	lvl++;
+	num = ft_itoa(lvl);
+	new_cont = ft_strjoin("SHLVL=", num);
+	free(num);
+	free(node->content);
+	node->content = new_cont;
+}
+
 void	incr_shell_lvl(t_list **env_adr)
 {
 	t_list	*node;
-	char	*num;
-	int		i;
+	int		lvl;
 	char	*cont;
-	char	*new_cont;
 
-	node =ft_lstfind_str(env_adr, "SHLVL=");
+	node = ft_lstfind_str(env_adr, "SHLVL=");
 	if (node == NULL)
 		return ;
 	else
 	{
 		cont = node->content;
-		i = 0;
-		while (cont[i] != '=')
-			i++;
-		i++;
-		num = ft_strdup(&cont[i]);
-		i = ft_atoi(num);
-		free(num);
-		i++;
-		num = ft_itoa(i);
-		new_cont = ft_strjoin("SHLVL=", num);
-		free(num);
-		free(node->content);
-		node->content = new_cont;
+		lvl = get_shell_lvl(cont);
+		set_shell_lvl(node, lvl);
 	}
 }
 
@@ -60,8 +75,7 @@ int	main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	env_var = get_env_var(env);
-	
 	incr_shell_lvl(&env_var);
 	main_loop(&env_var);
-	return (exit_status);
+	return (g_exit_status);
 }

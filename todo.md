@@ -1,16 +1,15 @@
-check exit status of builtins or other exit status , done need testing
-pipe problems with redirection, done need testing for multi redirections in multi commands
-implement expander, done need to complete heredoc
-heredoc compilted.
-now we need to tackle file descriptors openning and morph the given struct to produce the execution struct, done
+"/bin/ls" doesnt work
+'/bin/ls' works
 
+echo "cat lol.c | cat > lol.c"
+doesnt execute it give empty line !
 
-heredoc file is unseted so it cant be deleted even after sleeping (seems like, test it more), fixed
+ctrl c doesnt free the read line buffer !
 
-commands still execute when fd is -1 ! , done fixed
+ctrl \ in a blocking command and exit status of  signals doesnt update
 
-need expantion in parsing !
+export accepts '\' charcter !
 
+syntax errors ??
 
-/// merge todo :
-
+multi pipes (100 >) triger the weird file or command not found error !

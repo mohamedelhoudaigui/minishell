@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 11:17:37 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/20 18:34:15 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/06 17:17:24 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ char				*ft_strtrim(char const *s1, char const *set);
 int					ft_memcmp(const void *s1, const void *s2, size_t n);
 void				*ft_memmove(void *dst, const void *src, size_t len);
 char				*ft_strchr(const char *s, int c);
-char				*ft_strnstr(const char *haystack, const char *needle, size_t len);
+char				*ft_strnstr(const char *haystack,
+						const char *needle, size_t len);
 char				*ft_strrchr(const char *s, int c);
 char				*ft_itoa(int n);
 char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
@@ -67,9 +68,10 @@ void				ft_lstadd_back(t_list **lst, t_list *new);
 void				ft_lstdelone(t_list *lst, void (*del)(void *));
 void				ft_lstclear(t_list **lst, void (*del)(void *));
 void				ft_lstiter(t_list *lst, void (*f)(void *));
-t_list				*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
+t_list				*ft_lstmap(t_list *lst, void *(*f)(void *),
+						void (*del)(void *));
 void				ft_lstprint_str(t_list *head, int out);
 t_list				*ft_lstfind_str(t_list **list, char *compare);
-long long  ft_atoul(char *str);
+long long			ft_atoul(char *str);
 
 #endif

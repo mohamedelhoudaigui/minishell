@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 03:28:13 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/05 16:22:19 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/06 17:40:26 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,19 @@ int	redirect_command(t_list **env, t_commands *args)
 		execute_command(*env, args);
 		return (0);
 	}
-	if (ft_strncmp(com_name, "echo", ft_strlen(com_name)) == 0)
+	if (ft_strncmp(com_name, "echo", ft_strlen(com_name) + 4) == 0)
 		echo(args);
-	else if (ft_strncmp(com_name, "pwd", ft_strlen(com_name)) == 0)
+	else if (ft_strncmp(com_name, "pwd", ft_strlen(com_name) + 3) == 0)
 		pwd(args);
-	else if (ft_strncmp(com_name, "cd", ft_strlen(com_name)) == 0)
+	else if (ft_strncmp(com_name, "cd", ft_strlen(com_name) + 2) == 0)
 		cd(env, args);
-	else if (ft_strncmp(com_name, "exit", ft_strlen(com_name)) == 0)
+	else if (ft_strncmp(com_name, "exit", ft_strlen(com_name) + 4) == 0)
 		exit_b(args, env);
-	else if (ft_strncmp(com_name, "env", ft_strlen(com_name)) == 0)
+	else if (ft_strncmp(com_name, "env", ft_strlen(com_name) + 3) == 0)
 		env_b(*env, args);
-	else if (ft_strncmp(com_name, "unset", ft_strlen(com_name)) == 0)
+	else if (ft_strncmp(com_name, "unset", ft_strlen(com_name) + 5) == 0)
 		unset(env, args);
-	else if (ft_strncmp(com_name, "export", ft_strlen(com_name)) == 0)
+	else if (ft_strncmp(com_name, "export", ft_strlen(com_name) + 6) == 0)
 		export(env, args);
 	else
 		execute_command(*env, args);
@@ -43,26 +43,33 @@ int	redirect_command(t_list **env, t_commands *args)
 
 int	fork_or_not(t_commands *args)
 {
-	if (args && args->next == NULL && args->command[0] != NULL && args->command[0][0] != '\0')
+	if (args && args->next == NULL && args->command[0] != NULL
+		&& args->command[0][0] != '\0')
 	{
-		if (ft_strncmp(args->command[0], "echo", ft_strlen(args->command[0])) == 0)
+		if (ft_strncmp(args->command[0], "echo",
+				ft_strlen(args->command[0]) + 5) == 0)
 			return (0);
-		else if (ft_strncmp(args->command[0], "pwd", ft_strlen(args->command[0])) == 0)
+		else if (ft_strncmp(args->command[0], "pwd",
+				ft_strlen(args->command[0]) + 3) == 0)
 			return (0);
-		else if (ft_strncmp(args->command[0], "cd", ft_strlen(args->command[0])) == 0)
+		else if (ft_strncmp(args->command[0], "cd",
+				ft_strlen(args->command[0]) + 2) == 0)
 			return (0);
-		else if (ft_strncmp(args->command[0], "exit", ft_strlen(args->command[0])) == 0)
+		else if (ft_strncmp(args->command[0], "exit",
+				ft_strlen(args->command[0]) + 4) == 0)
 			return (0);
-		else if (ft_strncmp(args->command[0], "env", ft_strlen(args->command[0])) == 0)
+		else if (ft_strncmp(args->command[0], "env",
+				ft_strlen(args->command[0]) + 3) == 0)
 			return (0);
-		else if (ft_strncmp(args->command[0], "unset", ft_strlen(args->command[0])) == 0)
+		else if (ft_strncmp(args->command[0], "unset",
+				ft_strlen(args->command[0]) + 5) == 0)
 			return (0);
-		else if (ft_strncmp(args->command[0], "export", ft_strlen(args->command[0])) == 0)
+		else if (ft_strncmp(args->command[0], "export",
+				ft_strlen(args->command[0]) + 6) == 0)
 			return (0);
 	}
 	return (1);
 }
-
 
 int	process_job(t_list **env_adr, t_commands *args, int *child, int i, int **pipes, int n_commands)
 {
@@ -71,6 +78,8 @@ int	process_job(t_list **env_adr, t_commands *args, int *child, int i, int **pip
 		return (-1);
 	if (child[i] == 0)
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		if (pipes != NULL)
 			redirect_pipes(i, pipes, n_commands);
 		redirect_in(args->in);
@@ -80,11 +89,11 @@ int	process_job(t_list **env_adr, t_commands *args, int *child, int i, int **pip
 		else
 		{
 			close_all_fd(args);
-			exit_status = 1;
-			exit(exit_status);
+			g_exit_status = 1;
+			exit(g_exit_status);
 		}
 		close_all_fd(args);
-		exit(exit_status);
+		exit(g_exit_status);
 	}
 	return (0);
 }
@@ -92,8 +101,8 @@ int	process_job(t_list **env_adr, t_commands *args, int *child, int i, int **pip
 int	**create_pipes(int n_pipes)
 {
 	int		i;
-	int	**pipes;
-	
+	int		**pipes;
+
 	if (n_pipes == 0)
 		return (NULL);
 	pipes = (int **)ft_calloc(sizeof(int *), n_pipes + 1);
@@ -134,7 +143,7 @@ int	execution(t_list **env_adr, t_commands *args)
 	int     status;
 
 	if (!args)
-	 	return (0);
+		return (0);
 	fork_num = fork_or_not(args);
 	n_commands = ft_command_size(args);
 	child = (int *)ft_calloc(n_commands, sizeof(int));
@@ -156,7 +165,7 @@ int	execution(t_list **env_adr, t_commands *args)
 			waitpid(child[i++], &status, 0);
 			if (WIFEXITED(status))
 			{
-				exit_status = WEXITSTATUS(status);
+				g_exit_status = WEXITSTATUS(status);
 			}
 		}
 	}
@@ -167,7 +176,7 @@ int	execution(t_list **env_adr, t_commands *args)
 		if (args->in != -1 && args->out != -1)
 			redirect_command(env_adr, args);
 		else
-			exit_status = 1;
+			g_exit_status = 1;
 	}
 	free(child);
 	i = 0;
