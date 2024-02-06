@@ -86,5 +86,9 @@ bool	check_dollar_presence(t_oken *tokens);
 
 int		return_dollar_index(char *str);
 
+//signals:
+void	cmd_sig_handel(int signo);
+void	cmd_sig_loop(int signo);
+
 
 #endif

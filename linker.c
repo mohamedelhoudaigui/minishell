@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 09:11:43 by mlamkadm          #+#    #+#             */
-/*   Updated: 2024/02/05 16:06:55 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/06 01:24:27 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void  linker(t_info *info, t_list **env_adr)
   int   o_stdin;
   int   o_stdout;
 
+  signal(SIGQUIT, cmd_sig_handel);
+  signal(SIGINT, cmd_sig_handel);
   o_stdin = dup(0);
   o_stdout = dup(1);
   exec_coms = open_fd(info->cmd, env_adr);
@@ -47,6 +49,7 @@ void  chad_readline(t_info *info, t_alloc *alloc_head, t_list **env_adr)
     if (!line)
     {
       chad_free(info ,alloc_head);
+      printf("exit\n");
       exit(exit_status);
     }
     if (line[0] == '\0' || line_is_empty(line))
@@ -78,9 +81,10 @@ void  main_loop(t_list **env_adr)
   t_info *info;
   t_alloc *alloc_head;
 
-
   while (TRUE)
   {
+    signal(SIGQUIT, SIG_IGN);
+    signal(SIGINT, cmd_sig_loop);
    info = ft_calloc(1, sizeof(t_info));
     alloc_head = ft_calloc(1, sizeof(t_alloc));
     alloc_head->next = NULL;

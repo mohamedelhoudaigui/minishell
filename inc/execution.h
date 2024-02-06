@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:31:28 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/05 17:39:34 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/06 01:22:09 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,10 @@ int		parse_varname(char *arg);
 //pipes :
 void	redirect_pipes(int i, int **pipes, int n_commands);
 void	close_unused_pipes(int i, int **pipes, int n_commands);
+
+//signals :
+void	cmd_sig_handel(int signo);
+void	cmd_sig_loop(int signo);
 
 
 #endif
