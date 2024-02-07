@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 07:29:37 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/06 18:56:49 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/06 23:33:37 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,15 +70,12 @@ int	here_doc(char *delimiter, t_list **env_adr, bool flag)
 		return (-1);
 	while (1)
 	{
-		signal(SIGQUIT, SIG_IGN);
+		here_doc_sig();
 		read = readline("> ");
 		if (read == NULL)
-		{
-			write(1, "\n", 1);
 			break ;
-		}
 		if (ft_strncmp(read, delimiter, ft_strlen(read)
-			+ ft_strlen(delimiter)) == 0)
+				+ ft_strlen(delimiter)) == 0)
 		{
 			free(read);
 			break ;

@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:31:28 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/06 17:23:42 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/06 23:26:19 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,19 @@
 
 # include "../libft/libft.h"
 # include "./parse.h"
-# include <readline/history.h>
-# include <readline/readline.h>
+# include <unistd.h>
+# include <stdio.h>
 # include <paths.h>
 # include <sys/wait.h>
 # include <signal.h>
 # include <dirent.h>
-# include <unistd.h>
 # include <limits.h>
 # include <fcntl.h>
 # include <errno.h>
 # include <stdbool.h>
 # include <stdlib.h>
-# include <stdio.h>
+# include <readline/history.h>
+# include <readline/readline.h>
 
 extern int	g_exit_status;
 
@@ -39,8 +39,23 @@ typedef struct s_commands
 	struct s_commands	*next;
 }				t_commands;
 
-// testing :
-t_commands	*create_args(int ac, char **av, int in, int out);
+typedef struct s_proc_job
+{
+	t_list			**env_adr;
+	t_commands		*args;
+	int				*child;
+	int				i;
+	int				**pipes;
+	int				n_commands;
+}				t_proc_job;
+
+int			redirect_command(t_list **env, t_commands *args);
+int			fork_or_not(t_commands *args);
+int			**create_pipes(int n_pipes);
+void		close_pipes(int **pipes);
+void		redirect_in_out_command(t_commands *args, t_list **env_adr);
+void		wait_and_exit_status(int *child, int n_commands);
+int			process_job(t_proc_job *pr);
 
 //opening fd : 
 t_commands	*open_fd(t_cmd	*commands, t_list **env_adr);
@@ -65,7 +80,6 @@ char		*get_expande_var(char *line);
 
 //execution :
 int			execution(t_list **env_adr, t_commands *args);
-int			redirect_command(t_list **env, t_commands *args);
 int			ft_command_size(t_commands *args);
 char		**morph_env(t_list *env_var);
 char		**morph_args(t_commands *args);
@@ -137,6 +151,6 @@ void		close_unused_pipes(int i, int **pipes, int n_commands);
 void		sig_int(int signo);
 void		sig_command(int signo);
 void		cmd_sig_loop(void);
-void		cmd_sig_fork(void);
+void		here_doc_sig(void);
 
 #endif

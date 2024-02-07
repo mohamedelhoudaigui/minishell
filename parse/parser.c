@@ -1,8 +1,31 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mlamkadm <mlamkadm@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/06 23:54:43 by mlamkadm          #+#    #+#             */
+/*   Updated: 2024/02/06 23:54:50 by mlamkadm         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../inc/parse.h"
 
+t_cmd	*parser_handle_pipe(t_oken *tokens, t_info *info, t_cmd *cmd, int i)
+{
+		int		word_count;
 
+		cmd->cmd[i] = NULL;
+		cmd->next = chad_alloc(sizeof(t_cmd), 1, info->alloc_head);
+		cmd = cmd->next;
+		cmd->redir = NULL;
+		cmd->redir_out = NULL;
+		word_count = words_before_pipe(tokens->next) + 1;
+		cmd->cmd = chad_alloc(sizeof(char *), word_count, info->alloc_head);
+		tokens = tokens->next;
+		return (cmd);
+}
 
 t_cmd	*parser(t_info *info)
 {
@@ -21,18 +44,13 @@ t_cmd	*parser(t_info *info)
 	cmd = chad_alloc(sizeof(t_cmd), 1, info->alloc_head);
 	head = cmd;
 	cmd->cmd = chad_alloc(sizeof(char *), word_count, info->alloc_head);
+	info->cmd = cmd;
 	i = 0;
 	while (tokens != NULL)
 	{
 		if (tokens->data_type == PIPE)
 		{
-			cmd->cmd[i] = NULL;
-			cmd->next = chad_alloc(sizeof(t_cmd), 1, info->alloc_head);
-			cmd = cmd->next;
-			cmd->redir = NULL;
-			cmd->redir_out = NULL;
-			word_count = words_before_pipe(tokens->next) + 1;
-			cmd->cmd = chad_alloc(sizeof(char *), word_count, info->alloc_head);
+			cmd = parser_handle_pipe(tokens, info, cmd, i);
 			tokens = tokens->next;
 			i = 0;
 			continue ;
@@ -50,9 +68,7 @@ t_cmd	*parser(t_info *info)
 			continue ;
 		}
 		if (tokens->data_type == WORD)
-		{
 			handle_word_and_expand(tokens, info, cmd, i);
-		}
 		if (tokens->next == NULL)
 		{
 			cmd->cmd[i + 1] = NULL;
@@ -61,6 +77,5 @@ t_cmd	*parser(t_info *info)
 		tokens = tokens->next;
 		i++;
 	}
-	info->cmd = head;
 	return (head);
 }

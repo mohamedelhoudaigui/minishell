@@ -1,57 +1,57 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redir_utils.c                                      :+:      :+:    :+:   */
+/*   str_manip.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mlamkadm <mlamkadm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/06 18:50:17 by mlamkadm          #+#    #+#             */
-/*   Updated: 2024/02/06 23:30:55 by mlamkadm         ###   ########.fr       */
+/*   Created: 2024/02/06 20:22:13 by mlamkadm          #+#    #+#             */
+/*   Updated: 2024/02/06 20:29:28 by mlamkadm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/parse.h"
 
-bool	loop_dollar_presence(t_oken *tokens)
+bool	line_is_empty(char *line)
 {
 	int	i;
 
 	i = 0;
-	while (tokens->token[i])
+	while (line[i])
 	{
-		if (tokens->token[i] == '$')
-			return (TRUE);
+		if (line[i] != ' ')
+			return (FALSE);
 		i++;
 	}
+	return (TRUE);
+}
+
+bool	is_operator(char c)
+{
+	if (c == '|' || c == '>' || c == '<')
+		return (TRUE);
 	return (FALSE);
 }
 
-int	words_before_pipe(t_oken *tokens)
+bool	is_quote(char c)
 {
-	int	count;
-
-	count = 0;
-	while (tokens)
-	{
-		if (tokens->data_type == 5 || tokens == NULL)
-			return (count);
-		else
-			count++;
-		tokens = tokens->next;
-	}
-	return (count);
+	if (c == DQUOTE || c == QUOTE)
+		return (TRUE);
+	return (FALSE);
 }
 
-int	return_dollar_index(char *str)
+void	print_arr(char **str)
 {
 	int	i;
 
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] == '$')
-			return (i);
-		i++;
-	}
-	return (-1);
+	i = -1;
+	while (str[++i])
+		printf("%s\n", str[i]);
+}
+
+bool	is_space(char c)
+{
+	if (c == ' ' || c == '\t')
+		return (TRUE);
+	return (FALSE);
 }

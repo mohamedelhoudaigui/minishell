@@ -6,11 +6,24 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 03:28:13 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/06 17:40:26 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/07 01:36:03 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/execution.h"
+
+void	free_pipes(int **pipes)
+{
+	int	i;
+
+	i = 0;
+	if (pipes != NULL)
+	{
+		while (pipes[i])
+			free(pipes[i++]);
+		free(pipes);
+	}
+}
 
 int	redirect_command(t_list **env, t_commands *args)
 {
@@ -41,63 +54,6 @@ int	redirect_command(t_list **env, t_commands *args)
 	return (0);
 }
 
-int	fork_or_not(t_commands *args)
-{
-	if (args && args->next == NULL && args->command[0] != NULL
-		&& args->command[0][0] != '\0')
-	{
-		if (ft_strncmp(args->command[0], "echo",
-				ft_strlen(args->command[0]) + 5) == 0)
-			return (0);
-		else if (ft_strncmp(args->command[0], "pwd",
-				ft_strlen(args->command[0]) + 3) == 0)
-			return (0);
-		else if (ft_strncmp(args->command[0], "cd",
-				ft_strlen(args->command[0]) + 2) == 0)
-			return (0);
-		else if (ft_strncmp(args->command[0], "exit",
-				ft_strlen(args->command[0]) + 4) == 0)
-			return (0);
-		else if (ft_strncmp(args->command[0], "env",
-				ft_strlen(args->command[0]) + 3) == 0)
-			return (0);
-		else if (ft_strncmp(args->command[0], "unset",
-				ft_strlen(args->command[0]) + 5) == 0)
-			return (0);
-		else if (ft_strncmp(args->command[0], "export",
-				ft_strlen(args->command[0]) + 6) == 0)
-			return (0);
-	}
-	return (1);
-}
-
-int	process_job(t_list **env_adr, t_commands *args, int *child, int i, int **pipes, int n_commands)
-{
-	child[i] = fork();
-	if (child[i] == -1)
-		return (-1);
-	if (child[i] == 0)
-	{
-		signal(SIGINT, SIG_DFL);
-		signal(SIGQUIT, SIG_DFL);
-		if (pipes != NULL)
-			redirect_pipes(i, pipes, n_commands);
-		redirect_in(args->in);
-		redirect_out(args->out);
-		if (args->in != -1 && args->out != -1)
-			redirect_command(env_adr, args);
-		else
-		{
-			close_all_fd(args);
-			g_exit_status = 1;
-			exit(g_exit_status);
-		}
-		close_all_fd(args);
-		exit(g_exit_status);
-	}
-	return (0);
-}
-
 int	**create_pipes(int n_pipes)
 {
 	int		i;
@@ -116,75 +72,49 @@ int	**create_pipes(int n_pipes)
 	return (pipes);
 }
 
-void	close_pipes(int **pipes)
+void	handle_fork_execution(t_list **env_adr, t_commands *args,
+		int *child, int n_commands)
 {
-	int	*fd;
-	int	i;
+	int			**pipes;
+	int			i;
+	t_proc_job	*proc_job;
 
-	if (!pipes)
-		return ;
 	i = 0;
-	while (pipes[i])
+	pipes = create_pipes(n_commands - 1);
+	proc_job = (t_proc_job *)malloc(sizeof(t_proc_job));
+	while (args)
 	{
-		fd = (int *)pipes[i];
-		close(fd[0]);
-		close(fd[1]);
+		proc_job->i = i;
+		proc_job->env_adr = env_adr;
+		proc_job->args = args;
+		proc_job->child = child;
+		proc_job->pipes = pipes;
+		proc_job->n_commands = n_commands;
+		process_job(proc_job);
 		i++;
+		args = args->next;
 	}
+	close_pipes(pipes);
+	wait_and_exit_status(child, n_commands);
+	free_pipes(pipes);
+	free(proc_job);
 }
 
 int	execution(t_list **env_adr, t_commands *args)
 {
-	int		fork_num;
-	int		*child;
-	int		n_commands;
-	int		i;
-	int		**pipes;
-	int     status;
+	int	fork_num;
+	int	*child;
+	int	n_commands;
 
 	if (!args)
 		return (0);
 	fork_num = fork_or_not(args);
 	n_commands = ft_command_size(args);
 	child = (int *)ft_calloc(n_commands, sizeof(int));
-	pipes = NULL;
-	i = 0;
 	if (fork_num == 1)
-	{
-		pipes = create_pipes(n_commands - 1);
-		while (args)
-		{
-			process_job(env_adr, args, child, i, pipes, n_commands);
-			i++;
-			args = args->next;
-		}
-		close_pipes(pipes);
-		i = 0;
-		while (i < n_commands)
-		{
-			waitpid(child[i++], &status, 0);
-			if (WIFEXITED(status))
-			{
-				g_exit_status = WEXITSTATUS(status);
-			}
-		}
-	}
+		handle_fork_execution(env_adr, args, child, n_commands);
 	else
-	{
-		redirect_in(args->in);
-		redirect_out(args->out);
-		if (args->in != -1 && args->out != -1)
-			redirect_command(env_adr, args);
-		else
-			g_exit_status = 1;
-	}
+		redirect_in_out_command(args, env_adr);
 	free(child);
-	i = 0;
-	if (pipes != NULL)
-	{
-		while (pipes[i])
-			free(pipes[i++]);
-		free(pipes);
-	}
 	return (0);
 }

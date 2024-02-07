@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlamkadm <mlamkadm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 18:34:34 by mlamkadm          #+#    #+#             */
-/*   Updated: 2024/02/06 19:00:57 by mlamkadm         ###   ########.fr       */
+/*   Updated: 2024/02/07 00:32:55 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*chad_expand(t_list **env_var, char *var, t_info *info)
 	if (!var)
 		return (NULL);
 	if (var[1] == '?' && var[2] == '\0')
-		return (return_exit_status());
+		return (return_exit_status(info));
 	var++;
 	node = ft_lstfind_str(env_var, var);
 	if (!node || !node->content)
@@ -42,8 +42,7 @@ char	*chad_expand(t_list **env_var, char *var, t_info *info)
 		if (node_content[i - 1] == '=')
 			break ;
 	}
-	result = ft_strdup(&node_content[i]);
-	add_address(result, info->alloc_head);
+	result = chad_strdup(&node_content[i], info->alloc_head);
 	if (!result)
 		return (NULL);
 	return (result);

@@ -6,13 +6,13 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 22:42:17 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/01/20 06:27:21 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/06 22:58:31 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-long long  ft_atoul(char *str)
+long long	ft_atoul(char *str)
 {
 	int					i;
 	unsigned long long	res;

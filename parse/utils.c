@@ -1,45 +1,17 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mlamkadm <mlamkadm@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/06 20:20:05 by mlamkadm          #+#    #+#             */
+/*   Updated: 2024/02/06 20:37:08 by mlamkadm         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../inc/parse.h"
 
-bool	line_is_empty(char *line)
-{
-	int	i;
-
-	i = 0;
-	while (line[i])
-	{
-		if (line[i] != ' ')
-			return (FALSE);
-		i++;
-	}
-	return (TRUE);
-}
-
-void	parse_error(const char *exit_msg, t_info *info)
-{
-	printf("%s\n", exit_msg);
-	free(info->line);
-	free_all(info->alloc_head);
-	free(info);
-	g_exit_status = 258;
-}
-
-void	print_arr(char **str)
-{
-	int	i;
-
-	i = -1;
-	while (str[++i])
-		printf("%s\n", str[i]);
-}
-
-bool	is_space(char c)
-{
-	if (c == ' ' || c == '\t')
-		return (TRUE);
-	return (FALSE);
-}
 int	quote_len(char *line, t_info *info)
 {
 	int	i;
@@ -48,40 +20,22 @@ int	quote_len(char *line, t_info *info)
 	i = info->cursor;
 	j = 0;
 	if (line[i] && line[i - 1] == 34)
-	{
-		while (line[i])
-		{
-			if (line[i] && line[i] == 34)
-				return (j);
-			i++;
-			j++;
-		}
-	}
+		return (get_quote_length(line, i, j, 34));
 	else if (line[i - 1] == 39)
-	{
-		while (line[i])
-		{
-			if (line[i] && line[i] == 39)
-				return (j);
-			i++;
-			j++;
-		}
-	}
+		return (get_quote_length(line, i, j, 39));
 	return (-1);
 }
 
-bool	is_operator(char c)
+int	get_quote_length(char *line, int i, int j, char quote_type)
 {
-	if (c == '|' || c == '>' || c == '<')
-		return (TRUE);
-	return (FALSE);
-}
-
-bool	is_quote(char c)
-{
-	if (c == DQUOTE || c == QUOTE)
-		return (TRUE);
-	return (FALSE);
+	while (line[i])
+	{
+		if (line[i] && line[i] == quote_type)
+			return (j);
+		i++;
+		j++;
+	}
+	return (-1);
 }
 
 int	last_char_in_word(char *line, t_info *info)
@@ -109,102 +63,4 @@ int	word_len(t_info *info)
 		j++;
 	}
 	return (j);
-}
-
-bool	valid_quotes(t_info *info)
-{
-	char	*line;
-	int		i;
-
-	line = info->line;
-	i = info->cursor - 1;
-	if (line[i] == DQUOTE)
-	{
-		i++;
-		if (line[i] == DQUOTE)
-			return (TRUE);
-		while (line[i])
-		{
-			if (line[i] == DQUOTE)
-				return (TRUE);
-			i++;
-		}
-	}
-	else if (line[i] == QUOTE)
-	{
-		i++;
-		if (line[i] == QUOTE)
-			return (TRUE);
-		while (line[i])
-		{
-			if (line[i] == QUOTE)
-				return (TRUE);
-			i++;
-		}
-	}
-	return (FALSE);
-}
-
-const char	*translate(int c)
-{
-	if (c == 1)
-		return ("REDIR_IN");
-	if (c == 2)
-		return ("REDIR_OUT");
-	if (c == 3)
-		return ("HEREDOC");
-	if (c == 4)
-		return ("APPEND");
-	if (c == 5)
-		return ("PIPE");
-	if (c == 6)
-		return ("WORD");
-	return (NULL);
-}
-
-
-char	*chad_strdup(const char *s1, t_alloc *alloc_head)
-{
-	size_t	len;
-	char	*dupped_str;
-	size_t	i;
-
-	len = ft_strlen(s1);
-	i = 0;
-	dupped_str = (char *)chad_alloc(sizeof(char), (len + 1), alloc_head);
-	if (!dupped_str)
-		return (NULL);
-	while (s1[i])
-	{
-		dupped_str[i] = s1[i];
-		i++;
-	}
-	dupped_str[i] = '\0';
-	return (dupped_str);
-}
-
-char	*chad_strjoin(const char *s1, const char *s2, t_alloc *alloc_head)
-{
-	size_t i;
-	size_t j;
-	size_t full_len;
-	char *full_str;
-
-	i = 0;
-	j = 0;
-	full_len = ft_strlen(s1) + ft_strlen(s2) + 1;
-	if (!s1 || !s2)
-		return (NULL);
-	full_str = (char *)chad_alloc(full_len, sizeof(char), alloc_head);
-	if (!full_str)
-		return (NULL);
-	while (s1[i] && i < full_len)
-	{
-		full_str[i] = s1[i];
-		i++;
-	}
-	while (s2[j] && i < full_len)
-		full_str[i++] = s2[j++];
-	full_str[i] = '\0';
-	return (full_str);
 }

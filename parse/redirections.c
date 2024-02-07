@@ -6,7 +6,7 @@
 /*   By: mlamkadm <mlamkadm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 18:49:24 by mlamkadm          #+#    #+#             */
-/*   Updated: 2024/02/06 19:34:42 by mlamkadm         ###   ########.fr       */
+/*   Updated: 2024/02/06 22:05:44 by mlamkadm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,9 @@ void	handle_word_and_expand(t_oken *tokens, t_info *info, t_cmd *cmd, int i)
 	j = 1;
 	k = 0;
 	env = info->env;
-	if (loop_dollar_presence(tokens) == TRUE && tokens->quote_type == 1
+	if (tokens->data_type == WORD && loop_dollar_presence(tokens) == FALSE)
+		cmd->cmd[i] = tokens->token;
+	else if (loop_dollar_presence(tokens) == TRUE && tokens->quote_type == 1
 		&& tokens->token[0] == '\'')
 	{
 		tmp = chad_alloc(sizeof(char), ft_strlen(tokens->token) - 1,
@@ -126,16 +128,7 @@ void	handle_word_and_expand(t_oken *tokens, t_info *info, t_cmd *cmd, int i)
     }
 	else if (tokens->quote_type == 0)
 		cmd->cmd[i] = tokens->token;
-	else if (tokens->quote_type == 1 && tokens->token[0] != '\'')
+	else if (tokens->quote_type == 1) 
 		cmd->cmd[i] = chad_expand(env, tokens->token, info);
-	else
-		cmd->cmd[i] = tokens->token;
-	// else if (loop_dollar_presence(tokens) == TRUE && tokens->quote_type == 1)
-	// {
-	// 	puts("dollar presence in quote");
-	// 	cmd->cmd[i] = chad_expand(env, tokens->token, info);
-	// }
-	// cmd->cmd[i] = tokens->token;
-	// else if (tokens->dollar_presence == TRUE)
-	// 	cmd->cmd[i] = chad_expand(env, tokens->token, info);
+
 }

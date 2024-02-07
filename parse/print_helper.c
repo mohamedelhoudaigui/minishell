@@ -6,11 +6,28 @@
 /*   By: mlamkadm <mlamkadm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 18:58:50 by mlamkadm          #+#    #+#             */
-/*   Updated: 2024/02/06 19:14:15 by mlamkadm         ###   ########.fr       */
+/*   Updated: 2024/02/06 20:18:56 by mlamkadm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/parse.h"
+
+const char	*translate(int c)
+{
+	if (c == 1)
+		return ("REDIR_IN");
+	if (c == 2)
+		return ("REDIR_OUT");
+	if (c == 3)
+		return ("HEREDOC");
+	if (c == 4)
+		return ("APPEND");
+	if (c == 5)
+		return ("PIPE");
+	if (c == 6)
+		return ("WORD");
+	return (NULL);
+}
 
 void	print_cmd(t_cmd *cmd)
 {
