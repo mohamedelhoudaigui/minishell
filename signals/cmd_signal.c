@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 01:13:28 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/06 23:54:27 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/07 01:49:33 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	cmd_sig_loop(void)
 void	here_doc_int(int signo)
 {
 	(void)signo;
-	g_exit_status = 1;
+	g_exit_status = 130;
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	ioctl(0, TIOCSTI, "\4");

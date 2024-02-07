@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 17:44:31 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/05 17:45:01 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/07 01:54:11 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,11 @@ int	handle_in_files(t_redir	*in_file, t_list **env_adr)
 		if (in_file->type == 1)
 			fd = open(in_file->file, O_RDONLY, 0777);
 		if (in_file->type == 3)
+		{
 			fd = here_doc(in_file->file, env_adr, in_file->heredoc_ex);
+			if (g_exit_status == 130)
+				main_loop(env_adr);
+		}
 		if (fd == -1)
 		{
 			ft_putstr_fd("open: Error opening file\n", 2);
