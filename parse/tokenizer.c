@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 19:10:22 by mlamkadm          #+#    #+#             */
-/*   Updated: 2024/02/08 16:07:37 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/08 16:50:34 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ t_info	*tokenizer(char *line, t_info *info)
 	{
 		if (is_operator(line[info->cursor]))
 			handle_operator(line, info);
-		else if (line[info->cursor] == DQUOTE_CHAR || line[info->cursor] == QUOTE_CHAR)
+		else if (line[info->cursor] == DQUOTE_CHAR
+			|| line[info->cursor] == QUOTE_CHAR)
 		{
 			if (!handle_quote(line, info))
 				return (NULL);
