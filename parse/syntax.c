@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlamkadm <mlamkadm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 18:26:12 by mlamkadm          #+#    #+#             */
-/*   Updated: 2024/02/07 02:53:35 by mlamkadm         ###   ########.fr       */
+/*   Updated: 2024/02/08 19:12:49 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,22 +28,22 @@ bool	check_token_syntax2(t_oken *tokens)
 	{
 		if (is_redir(tokens) && is_redir(tokens->next))
 			return (g_exit_status = 258,
-				printf("syntax error near unexpected token `newline'\n"), TRUE);
+				ft_putstr_fd("syntax error near unexpected token `newline'\n", 2), TRUE);
 		if (tokens->data_type == PIPE && tokens->next->data_type == PIPE)
 		{
-			return (printf("syntax error near unexpected token `|'\n"),
+			return (ft_putstr_fd("syntax error near unexpected token `|'\n", 2),
 				g_exit_status = 258, TRUE);
 		}
 		tokens = tokens->next;
 	}
 	if (tokens->data_type == PIPE)
 	{
-		printf("syntax error near unexpected token `|'\n");
+		ft_putstr_fd("syntax error near unexpected token `|'\n", 2);
 		return (g_exit_status = 258, TRUE);
 	}
 	if (tokens->data_type == REDIR_IN || tokens->data_type == REDIR_OUT
 		|| tokens->data_type == HEREDOC || tokens->data_type == APPEND)
-		return (printf("syntax error near unexpected token `newline'\n"),
+		return (ft_putstr_fd("syntax error near unexpected token `newline'\n", 2),
 			g_exit_status = 258, TRUE);
 	return (FALSE);
 }

@@ -6,11 +6,27 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 14:19:33 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/08 15:49:28 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/08 19:09:23 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/execution.h"
+
+void	print_err(char *com, int n)
+{
+	if (n == 1)
+	{
+		ft_putstr_fd("bash : ", 1);
+		ft_putstr_fd(com, 2);
+		ft_putstr_fd(" : permission denied\n", 2);
+	}
+	if (n == 2)
+	{
+		ft_putstr_fd("bash : ", 2);
+		ft_putstr_fd(com, 2);
+		ft_putstr_fd(" : command not found\n", 2);
+	}
+}
 
 char	*check_command_help(char *com, char **path_splited, int key)
 {
@@ -104,12 +120,12 @@ int	execute_command(t_list *env_var, t_commands *args)
 	execve(args_str[0], args_str, env);
 	if (errno == 13)
 	{
-		printf("bash : %s : permission denied\n", args_str[0]);
+		print_err(args_str[0], 1);
 		exit(126);
 	}
 	else if (errno == 2)
 	{
-		printf("bash : %s : command not found\n", args_str[0]);
+		print_err(args_str[0], 2);
 		exit(127);
 	}
 	else

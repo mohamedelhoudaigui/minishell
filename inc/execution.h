@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:31:28 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/07 04:08:30 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/08 18:13:17 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ bool		check_flag(char *flag);
 void		call_expander(char *str);
 
 // pwd :
-int			pwd(t_commands *args);
+int			pwd(t_commands *args, t_list **env_adr);
 
 //cd :
 int			cd(t_list **env_adr, t_commands *args);

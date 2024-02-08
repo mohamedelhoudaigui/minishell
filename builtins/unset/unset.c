@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 01:22:37 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/06 18:33:32 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/08 19:10:56 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,13 @@ int	unset(t_list **env_vars, t_commands *args)
 		var = args->command[i];
 		if (parse_varname_unset(var) == 1)
 		{
-			printf("unset : %s : not a valid identifier\n", var);
+			ft_putstr_fd("unset: ", 2);
+			ft_putstr_fd(var, 2);
+			ft_putstr_fd(" : not a valid identifier\n", 2);
 			g_exit_status = 1;
 		}
 		else
-		{
 			handle_command_unset(env_vars, var);
-		}
 		i++;
 	}
 	return (0);

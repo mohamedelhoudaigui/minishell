@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 02:57:03 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/07 03:01:35 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/08 18:28:44 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ t_oken				*add_token(char *str_token, t_info *info);
 
 void				join_quotes(t_oken *head, t_info *info);
 
-char				*return_exit_status(void);
+char				*return_exit_status(t_info *info);
 
 bool				check_dollar_presence(t_oken *token);
 void				handle_pipe(t_info *info);
