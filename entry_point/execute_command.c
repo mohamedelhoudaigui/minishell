@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 14:19:33 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/08 12:42:46 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/08 15:49:28 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,10 @@ char	*check_command_help(char *com, char **path_splited, int key)
 {
 	int		i;
 	char	*str;
+	char	*tmp;
 
 	i = 0;
+	tmp = ft_strdup(com);
 	while (path_splited[i])
 	{
 		str = ft_strjoin(path_splited[i], com);
@@ -33,7 +35,7 @@ char	*check_command_help(char *com, char **path_splited, int key)
 	}
 	if (key == 1)
 		return (com);
-	return (NULL);
+	return (tmp);
 }
 
 char	*check_command(char *command, char **path_splited)
@@ -41,12 +43,14 @@ char	*check_command(char *command, char **path_splited)
 	int		key;
 	char	*new_com;
 
+	if (command == NULL || command[0] == '\0')
+		return (ft_strdup(""));
 	if (command[0] == '/' || command[0] == '.')
 	{
 		if (access(command, X_OK) == 0)
 			return (command);
 		else
-			return (NULL);
+			return (command);
 	}
 	key = 0;
 	if (path_splited == NULL)
@@ -100,12 +104,12 @@ int	execute_command(t_list *env_var, t_commands *args)
 	execve(args_str[0], args_str, env);
 	if (errno == 13)
 	{
-		ft_putstr_fd("bash : command not found\n", 2);
+		printf("bash : %s : permission denied\n", args_str[0]);
 		exit(126);
 	}
 	else if (errno == 2)
 	{
-		ft_putstr_fd("bash : command not found\n", 2);
+		printf("bash : %s : command not found\n", args_str[0]);
 		exit(127);
 	}
 	else

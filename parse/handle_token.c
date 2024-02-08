@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_token.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlamkadm <mlamkadm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 23:12:50 by mlamkadm          #+#    #+#             */
-/*   Updated: 2024/02/06 23:27:21 by mlamkadm         ###   ########.fr       */
+/*   Updated: 2024/02/08 16:07:37 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ t_oken	*handle_word(char *line, t_info *info)
 	}
 	str_token[len] = '\0';
 	new_token = add_token(str_token, info);
-	if (line[i] == DQUOTE || line[i] == QUOTE)
+	if (line[i] == DQUOTE_CHAR || line[i] == QUOTE_CHAR)
 		new_token->join_next = TRUE;
 	else
 		new_token->join_next = FALSE;

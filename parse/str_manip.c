@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   str_manip.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlamkadm <mlamkadm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:22:13 by mlamkadm          #+#    #+#             */
-/*   Updated: 2024/02/06 20:29:28 by mlamkadm         ###   ########.fr       */
+/*   Updated: 2024/02/08 16:07:37 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ bool	is_operator(char c)
 
 bool	is_quote(char c)
 {
-	if (c == DQUOTE || c == QUOTE)
+	if (c == DQUOTE_CHAR || c == QUOTE_CHAR)
 		return (TRUE);
 	return (FALSE);
 }

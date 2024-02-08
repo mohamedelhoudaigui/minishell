@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 02:57:13 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/07 04:06:36 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/08 16:08:09 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,11 @@
 
 # define TRUE 1
 # define FALSE 0
-# define QUOTE 39
-# define DQUOTE 34
+# define QUOTE_CHAR 39
+# define DQUOTE_CHAR 34
+# define PIPE_CHAR '|'
+# define REDIR_OUT_CHAR '>'
+# define REDIR_IN_CHAR '<'
 
 # define REDIR_IN 1
 # define REDIR_OUT 2
@@ -25,7 +28,5 @@
 # define PIPE 5
 # define WORD 6
 
-# define PIPE_CHAR '|'
-# define REDIR_OUT_CHAR '>'
-# define REDIR_IN_CHAR '<'
+
 #endif
