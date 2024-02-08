@@ -6,13 +6,13 @@
 /*   By: mlamkadm <mlamkadm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 18:20:28 by mlamkadm          #+#    #+#             */
-/*   Updated: 2024/02/06 18:56:37 by mlamkadm         ###   ########.fr       */
+/*   Updated: 2024/02/06 23:57:26 by mlamkadm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/parse.h"
 
-int 	pipe_count(t_info *info)
+int	pipe_count(t_info *info)
 {
 	t_oken	*tokens;
 	int		count;

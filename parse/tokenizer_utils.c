@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlamkadm <mlamkadm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 19:11:15 by mlamkadm          #+#    #+#             */
-/*   Updated: 2024/02/06 19:28:32 by mlamkadm         ###   ########.fr       */
+/*   Updated: 2024/02/08 13:00:05 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void	join_quotes(t_oken *head, t_info *info)
 		{
 			token->token = chad_strjoin(token->token, next->token,
 					info->alloc_head);
+			token->join_next = next->join_next;
 			token->next = next->next;
 			next = next->next;
 		}

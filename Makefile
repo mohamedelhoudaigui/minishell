@@ -6,10 +6,10 @@ SRCS = ./builtins/echo/echo.c ./builtins/pwd/pwd.c env_vars.c minishell.c \
         ./open_fd_layer/open_fd.c  ./heredoc/heredoc.c ./heredoc/heredoc_help.c ./parse/garbage.c ./parse/parser.c \
 		./parse/utils.c ./parse/tokenizer.c ./linker.c ./open_fd_layer/open_fd_help.c ./signals/cmd_signal.c \
 		./builtins/cd/cd_help.c ./builtins/export/export_help2.c env_vars2.c ./entry_point/execute_command_help.c \
-		./entry_point/exec_help.c ./entry_point/exec_help2.c ./parse/syntax.c ./parse/parser_utils.c ./parse/exit_status.c \
-		./parse/redir_utils.c ./parse/print_helper.c \
+		./entry_point/exec_help.c ./entry_point/exec_help2.c ./parse/syntax.c ./parse/parser_utils.c ./parse/exit_status.c ./parse/redir_utils.c \
 		./parse/redirections.c ./parse/expansion.c ./parse/tokenizer_utils.c ./parse/str_manip.c ./parse/modded_func.c \
-		./parse/errors.c ./parse/handle_token.c ./parse/handle_token_extras.c
+		./parse/errors.c ./parse/handle_token.c ./parse/handle_token_extras.c ./parse/redirections_extras.c
+
 OBJS = $(SRCS:.c=.o)
 
 CC = cc
@@ -18,9 +18,8 @@ READLINE_HEADER =  "-I/Users/mel-houd/.brew/opt/readline/include"
 
 READLINE_LIB = "-L/Users/mel-houd/.brew/opt/readline/lib"
 
-HEADERS = -I./libft -I./inc
 
-CFLAGS = -Wall -Wextra -Werror $(READLINE_HEADER)
+CFLAGS = -Wall -Wextra -Werror $(READLINE_HEADER) 
 
 LIBFT = make -C ./libft
 
@@ -44,7 +43,7 @@ $(NAME): $(OBJS)
 lib :
 	$(LIBFT)
 
-%.o: %.c $(HEADERS)
+%.o: %.c ./libft/libft.h ./inc/execution.h ./inc/macros.h ./inc/parse.h ./inc/garbage.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:

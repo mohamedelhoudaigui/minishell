@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 03:28:00 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/06 17:40:26 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/08 12:58:17 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,11 @@ void	handle_command(t_list **env_var, char *arg, int flag)
 	char	*key;
 	char	*value;
 
-	if (flag != 2 && parse_varname(arg) == 0)
+	if (parse_varname(arg) == 0)
 	{
 		key = get_key(arg);
 		value = get_value(arg);
-		if (flag == 1)
+		if (flag == 1 || flag == 2)
 			update_env_var(env_var, key, value);
 		else if (flag == 0)
 			join_env_var(env_var, key, value);

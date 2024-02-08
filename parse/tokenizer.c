@@ -6,14 +6,12 @@
 /*   By: mlamkadm <mlamkadm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 19:10:22 by mlamkadm          #+#    #+#             */
-/*   Updated: 2024/02/06 22:11:40 by mlamkadm         ###   ########.fr       */
+/*   Updated: 2024/02/07 02:06:04 by mlamkadm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/execution.h"
 #include "../inc/parse.h"
-
-
 
 t_info	*tokenizer(char *line, t_info *info)
 {

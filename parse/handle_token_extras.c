@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_token_extras.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mlamkadm <mlamkadm@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 23:23:45 by mlamkadm          #+#    #+#             */
-/*   Updated: 2024/02/06 23:27:05 by mlamkadm         ###   ########.fr       */
+/*   Updated: 2024/02/08 12:59:24 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_info	*extract_token_stats(t_oken *new_token, t_info *info, int i, int j)
 	else
 		new_token->quote_type = 0;
 	new_token->data_type = WORD;
+	i++;
 	if (line[i + 1] == DQUOTE && line[i + 1] != '\0')
 		new_token->join_next = TRUE;
 	else if (line[i + 1] == QUOTE && line[i + 1] != '\0' && line[i + 1])

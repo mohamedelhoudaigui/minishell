@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 03:15:55 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/07 00:01:39 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/08 12:57:36 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ char	*get_value(char *arg)
 	char	*value;
 
 	i = calculate_to(arg);
+	if (arg[i] == '\0')
+		return (ft_strdup(""));
 	if (arg[i] == '+')
 		i++;
 	if (arg[i] == '=')

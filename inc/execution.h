@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:31:28 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/06 23:26:19 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/07 04:08:30 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "../libft/libft.h"
 # include "./parse.h"
 # include <unistd.h>
+# include <sys/ioctl.h>
 # include <stdio.h>
 # include <paths.h>
 # include <sys/wait.h>

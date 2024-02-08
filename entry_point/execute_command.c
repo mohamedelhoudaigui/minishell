@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/20 14:19:33 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/06 22:33:19 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/08 12:42:46 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,14 +90,13 @@ int	execute_command(t_list *env_var, t_commands *args)
 	int		exit_status;
 	char	**env;
 	char	**args_str;
-	char	*checked_args;
 	char	**splited_path;
 
 	exit_status = 0;
 	env = morph_env(env_var);
 	args_str = morph_args(args);
 	splited_path = split_path(env);
-	checked_args = check_command(args_str[0], splited_path);
+	args_str[0] = check_command(args_str[0], splited_path);
 	execve(args_str[0], args_str, env);
 	if (errno == 13)
 	{
@@ -109,6 +108,7 @@ int	execute_command(t_list *env_var, t_commands *args)
 		ft_putstr_fd("bash : command not found\n", 2);
 		exit(127);
 	}
-	perror("bash");
+	else
+		perror("bash");
 	return (0);
 }
