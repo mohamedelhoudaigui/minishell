@@ -5,3 +5,5 @@ export gg=$USER should expande !
 export $USER=gwgr should expande !
 
 echo $USE should not expande -> its in strncmp
+
+check redirections expantion : delimiter should not expande !
