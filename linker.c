@@ -86,6 +86,8 @@ void	main_loop(t_list **env_adr)
 
 	while (TRUE)
 	{
+		rl_on_new_line();
+		rl_replace_line("", 0);
 		cmd_sig_loop();
 		info = ft_calloc(1, sizeof(t_info));
 		alloc_head = ft_calloc(1, sizeof(t_alloc));
@@ -97,40 +99,3 @@ void	main_loop(t_list **env_adr)
 		free(alloc_head);
 	}
 }
-
-//void 	chad_readline(t_info *info, t_list **env_adr)
-//{
-//	char	*line;
-//	t_cmd *cmd;
-
-//		info->cursor = 0;
-//		info->env = env_adr;
-//		line = readline("Lbroshell$ ");
-//		if (!line)
-//		{
-//			chad_free(info);
-//			printf("exit\n");
-//			exit(g_exit_status);
-//		}
-//		info->line = line;
-//		if (line[0] == '\0' || line_is_empty(line))
-//		{
-//			chad_free(info);
-//			return;
-//		}
-//		add_history(line);
-//		if (!tokenizer(line, info))
-//		{
-//			chad_free(info);
-//			return;
-//		}
-//		join_quotes(info->head, info);
-//		cmd = parser(info);
-//		if(cmd == NULL)
-//		{
-//			chad_free(info);
-//			return;
-//		}
-//		linker(info, env_adr);
-//		chad_free(info);
-//}

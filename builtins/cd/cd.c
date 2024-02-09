@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 10:26:41 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/08 18:21:16 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/09 10:18:17 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ int	handle_buffer(t_list **env_adr, char *path, char *buffer)
 {
 	if (getcwd(buffer, 5000) == NULL)
 	{
+		free(buffer);
 		perror("getcwd");
 		change_old_pwd(env_adr);
 		handle_getcwd_cases(path, env_adr);
