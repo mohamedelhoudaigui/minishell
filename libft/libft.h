@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 11:17:37 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/06 17:17:24 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/08 20:15:03 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ typedef struct s_list
 	struct s_list	*next;
 }					t_list;
 
+t_list				*ft_lstfind_str_bro(t_list **list, char *compare);
 int					ft_isalnum(int c);
 int					ft_isalpha(int c);
 int					ft_isascii(int c);

@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 03:28:00 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/08 15:58:55 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/08 22:10:19 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ int	export(t_list **env_var, t_commands *args)
 	int		flag;
 	char	*arg;
 
-	printf("args->command[1]: %s\n", args->command[1]);
 	if (handle_env_var(env_var))
 		return (1);
 	if (!handle_args(env_var, args))
@@ -69,7 +68,7 @@ int	export(t_list **env_var, t_commands *args)
 		flag = handle_flag(arg);
 		if (parse_varname(arg) == 1)
 		{
-			printf("export : %s : not a valid identifier\n", arg);
+			ft_putstr_fd("export : not a valid identifier\n", 2);
 			g_exit_status = 1;
 		}
 		else

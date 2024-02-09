@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 12:25:35 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/08 15:08:01 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/08 20:47:33 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 
 char	*check_eq(char	*str)
 {
+	int	i;
+
+	i = 0;
+	while (str[i] != '=')
+		i++;
+	i++;
 	return (ft_strchr(str, '='));
 }
 

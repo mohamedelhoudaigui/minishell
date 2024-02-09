@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/18 18:51:41 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/06 17:40:26 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/09 00:43:58 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	check_alphanum(char *number)
 	i = 0;
 	while (number[i])
 	{
-		if (!ft_isdigit(number[i]))
+		if (!ft_isdigit(number[i]) && number[i] != '-' && number[i] != '+')
 			return (0);
 		i++;
 	}

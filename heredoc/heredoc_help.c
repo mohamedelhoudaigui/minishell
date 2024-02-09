@@ -6,7 +6,7 @@
 /*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 17:24:03 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/06 17:07:19 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/08 20:38:42 by mel-houd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,7 @@ void	check_expansion(char **line_d, t_list **env_adr, int file)
 	while ((*line_d)[i])
 	{
 		if ((*line_d)[i] == '$')
-		{
 			i += handle_expansion(line_d, env_adr, file, i);
-		}
 		else
 			write(file, &(*line_d)[i], 1);
 		i++;
