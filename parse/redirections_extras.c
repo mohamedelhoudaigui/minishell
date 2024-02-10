@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_extras.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mlamkadm <mlamkadm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 02:06:59 by mlamkadm          #+#    #+#             */
-/*   Updated: 2024/02/08 16:45:27 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/09 22:39:56 by mlamkadm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,6 @@ void	handle_redir_out(t_oken *tokens, t_info *info, t_cmd *cmd)
 	else if (tokens->data_type == APPEND)
 		type = APPEND;
 	file = tokens->next->token;
-	if (file[0] == '$')
-		file = chad_expand(info->env, file, info);
 	redir = chad_alloc(sizeof(t_redir), 1, info->alloc_head);
 	redir->type = type;
 	redir->file = file;
@@ -80,8 +78,6 @@ void	handle_redir_in(t_oken *tokens, t_info *info, t_cmd *cmd)
 
 	type = -1;
 	file = tokens->next->token;
-	if (file[0] == '$')
-		file = chad_expand(info->env, file, info);
 	redir = chad_alloc(sizeof(t_redir), 1, info->alloc_head);
 	if (tokens->data_type == HEREDOC)
 	{

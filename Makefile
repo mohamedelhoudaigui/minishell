@@ -30,10 +30,6 @@ LIBFT_PATH = ./libft
 
 LIBFT_A = libft/libft.a
 
-#RD_FLAGS = -lreadline
-
-#READLINE = $(shell brew --prefix readline)
-
 
 all: lib $(NAME)
 
@@ -56,4 +52,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: clean
+.PHONY: clean lib

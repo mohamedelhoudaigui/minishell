@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mlamkadm <mlamkadm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 02:57:03 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/08 18:28:44 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/10 00:30:06 by mlamkadm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ typedef struct s_info
 	t_cmd			*cmd;
 	t_cmd			*tmp;
 	char			*line;
+	int				index;
 	int				cursor;
 	struct s_token	*head;
 }					t_info;
@@ -74,14 +75,17 @@ bool				parser_handle_redir(t_cmd *cmd, t_info *info,
 						t_oken *tokens);
 int					quote_len(char *line, t_info *info);
 bool				is_operator(char c);
+int					token_dollar_count(t_oken *tokens);
 bool				is_quote(char c);
 int					last_char_in_word(char *line, t_info *info);
 void				print_tokens(t_oken *head);
+char				*ultimate_expander(t_oken *tokens, t_info *info);
 void				handle_operator(char *line, t_info *info);
 t_oken				*handle_word(char *line, t_info *info);
 void				handle_dollar(char *line, t_info *info);
 void				main_loop(t_list **env_adr);
 bool				check_line(char *line, t_info *info);
+char				*return_exit_status(t_info *info);
 int					word_len(t_info *info);
 bool				valid_quotes(t_info *info);
 bool				is_operator(char c);
@@ -99,13 +103,10 @@ bool				line_is_empty(char *line);
 t_info				*tokenizer(char *line, t_info *info);
 void				join_quotes(t_oken *head, t_info *info);
 bool				check_token_syntax(t_oken *tokens);
-
 bool				check_dollar_presence(t_oken *tokens);
 char				*chad_expand_special(t_list **env_var, char *var,
 						t_info *info);
-
 char				*chad_expand(t_list **env_var, char *var, t_info *info);
-
 bool				loop_dollar_presence(t_oken *tokens);
 int					return_dollar_index(char *str);
 int					words_before_pipe(t_oken *tokens);
@@ -116,15 +117,12 @@ void				handle_word_and_expand(t_oken *tokens, t_info *info,
 bool				check_line(char *line, t_info *info);
 void				default_token(t_oken *head);
 t_oken				*add_token(char *str_token, t_info *info);
-
+void				update_quote_type(t_oken *head);
 void				join_quotes(t_oken *head, t_info *info);
-
 char				*return_exit_status(t_info *info);
-
 bool				check_dollar_presence(t_oken *token);
 void				handle_pipe(t_info *info);
 void				handle_operator(char *line, t_info *info);
-
 // signals:
 int					redir_type(t_oken *tokens);
 void				handle_redir_in2(t_cmd *cmd, t_redir *redir);
@@ -156,8 +154,9 @@ t_info				*extract_token_stats(t_oken *new_token, t_info *info, int i,
 						int j);
 void				handle_dollar(char *line, t_info *info);
 void				handle_operator(char *line, t_info *info);
-
-// void print_tokens(t_oken *head_token);
-// void	print_redir(t_redir *redir);
+void				expand_tokens(t_info *info);
+char				*chad_substr(char const *s, unsigned int start, size_t len,
+						t_info *info);
+char				*bro_lstfind(char *res, t_info *info);
 
 #endif

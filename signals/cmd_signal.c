@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_signal.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mlamkadm <mlamkadm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 01:13:28 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/07 01:49:33 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/09 22:35:24 by mlamkadm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,8 @@ void	cmd_sig_loop(void)
 	signal(SIGINT, sig_int);
 }
 
-void	here_doc_int(int signo)
-{
-	(void)signo;
-	g_exit_status = 130;
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	ioctl(0, TIOCSTI, "\4");
-}
-
 void	here_doc_sig(void)
 {
 	signal(SIGQUIT, SIG_IGN);
-	signal(SIGINT, here_doc_int);
+	signal(SIGINT, SIG_IGN);
 }

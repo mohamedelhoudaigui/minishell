@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstfind_str_bro.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mlamkadm <mlamkadm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 20:13:41 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/08 20:14:01 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/09 23:27:40 by mlamkadm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ t_list	*ft_lstfind_str_bro(t_list **list, char *compare)
 {
 	t_list	*head;
 
-	
 	if (!list)
 		return (NULL);
 	head = *list;

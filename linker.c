@@ -1,13 +1,12 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   linker.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mlamkadm <mlamkadm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 09:11:43 by mlamkadm          #+#    #+#             */
-/*   Updated: 2024/02/07 05:06:48 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/09 23:20:01 by mlamkadm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +51,7 @@ void	handle_line(t_info *info, char *line, t_list **env_adr)
 		chad_free(info);
 		return ;
 	}
+	expand_tokens(info);
 	join_quotes(info->head, info);
 	cmd = parser(info);
 	if (cmd == NULL)
@@ -69,7 +69,7 @@ void	chad_readline(t_info *info, t_list **env_adr)
 
 	info->cursor = 0;
 	info->env = env_adr;
-	line = readline("Lbroshell$ ");
+	line = readline("minishell$ ");
 	if (!line)
 	{
 		chad_free(info);
@@ -86,8 +86,6 @@ void	main_loop(t_list **env_adr)
 
 	while (TRUE)
 	{
-		rl_on_new_line();
-		rl_replace_line("", 0);
 		cmd_sig_loop();
 		info = ft_calloc(1, sizeof(t_info));
 		alloc_head = ft_calloc(1, sizeof(t_alloc));

@@ -6,7 +6,7 @@
 /*   By: mlamkadm <mlamkadm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 23:54:43 by mlamkadm          #+#    #+#             */
-/*   Updated: 2024/02/07 02:44:04 by mlamkadm         ###   ########.fr       */
+/*   Updated: 2024/02/09 22:39:16 by mlamkadm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	parser_while(t_oken *tokens, t_info *info, t_cmd *cmd, int i)
 			continue ;
 		}
 		if (tokens->data_type == WORD)
-			handle_word_and_expand(tokens, info, cmd, i);
+			cmd->cmd[i] = tokens->token;
 		if (tokens->next == NULL)
 		{
 			cmd->cmd[i + 1] = NULL;

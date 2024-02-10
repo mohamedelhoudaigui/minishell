@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mlamkadm <mlamkadm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 19:11:15 by mlamkadm          #+#    #+#             */
-/*   Updated: 2024/02/08 13:00:05 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/09 22:31:10 by mlamkadm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,5 +86,22 @@ void	join_quotes(t_oken *head, t_info *info)
 			token = next;
 			next = next->next;
 		}
+	}
+}
+
+void	update_quote_type(t_oken *head)
+{
+	t_oken	*token;
+
+	token = head;
+	while (token)
+	{
+		if (token->token[0] == QUOTE_CHAR)
+			token->quote_type = QUOTE;
+		else if (token->token[0] == DQUOTE_CHAR)
+			token->quote_type = DQUOTE;
+		else
+			token->quote_type = NO_QUOTE;
+		token = token->next;
 	}
 }

@@ -6,31 +6,13 @@
 /*   By: mlamkadm <mlamkadm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 09:27:22 by mlamkadm          #+#    #+#             */
-/*   Updated: 2024/02/06 18:09:57 by mlamkadm         ###   ########.fr       */
+/*   Updated: 2024/02/09 22:38:55 by mlamkadm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/garbage.h"
 #include "../libft/libft.h"
 #include <stdio.h>
-
-void	add_address(void *address, t_alloc *head)
-{
-	t_alloc	*iter;
-	t_alloc	*new_alloc_node;
-
-	iter = head;
-	while (iter->next != NULL)
-	{
-		iter = iter->next;
-	}
-	new_alloc_node = ft_calloc(1, sizeof(t_alloc));
-	head = iter;
-	head->next = new_alloc_node;
-	new_alloc_node->address = address;
-	new_alloc_node->alloc_node = new_alloc_node;
-	new_alloc_node->next = NULL;
-}
 
 void	*chad_alloc(size_t size, int quantity, t_alloc *address)
 {

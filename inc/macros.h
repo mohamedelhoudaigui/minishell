@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   macros.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mlamkadm <mlamkadm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 02:57:13 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/08 16:14:03 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/09 23:29:17 by mlamkadm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # define PIPE_CHAR '|'
 # define REDIR_OUT_CHAR '>'
 # define REDIR_IN_CHAR '<'
+# define NEW_LINE_CHAR "`newline'"
 
 # define QUOTE 0
 # define DQUOTE 1

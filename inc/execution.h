@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-houd <mel-houd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mlamkadm <mlamkadm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/17 11:31:28 by mel-houd          #+#    #+#             */
-/*   Updated: 2024/02/08 18:13:17 by mel-houd         ###   ########.fr       */
+/*   Updated: 2024/02/10 00:29:59 by mlamkadm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 # include "../libft/libft.h"
 # include "./parse.h"
 # include <unistd.h>
-# include <sys/ioctl.h>
 # include <stdio.h>
 # include <paths.h>
 # include <sys/wait.h>
@@ -153,5 +152,6 @@ void		sig_int(int signo);
 void		sig_command(int signo);
 void		cmd_sig_loop(void);
 void		here_doc_sig(void);
+void		sig_quit_com(int no);
 
 #endif
