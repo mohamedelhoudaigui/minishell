@@ -19,7 +19,7 @@ READLINE_HEADER =  "-I/Users/mel-houd/.brew/opt/readline/include"
 READLINE_LIB = "-L/Users/mel-houd/.brew/opt/readline/lib"
 
 
-CFLAGS = -Wall -Wextra -Werror $(READLINE_HEADER) 
+CFLAGS = $(READLINE_HEADER) 
 
 LIBFT = make -C ./libft
 
